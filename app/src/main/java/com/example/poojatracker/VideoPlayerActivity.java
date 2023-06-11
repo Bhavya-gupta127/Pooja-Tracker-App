@@ -28,19 +28,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        Intent intent = getIntent();
-        String url = intent.getStringExtra("contentURL");
         String id = "gXWXKjR-qII";
-
-        for(int i=0;i<url.length()-1;i++)
-        {
-            if(url.charAt(i)=='v' && url.charAt(i+1)=='=')
-            {
-                id=url.substring(i+2,i+13);
-                break;
-            }
-        }
-//        Log.d("urlid",id);
+        Intent intent = getIntent();
+        id=intent.getStringExtra("contentURL");
 
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
