@@ -1,28 +1,50 @@
 package com.example.poojatracker;
 
 public class PoojaModel {
-    String img,title,desc,contentURL;
+    int id;
+    String title,desc,contentURL,VideoId;
     boolean status;
-
-    public PoojaModel(String img,String title,String desc,String contentURL,boolean status)
+    public String VideoIdFromUrl(String url)
     {
-        this.img=img;
+        String VideoId = "gXWXKjR-qII"; //default video
+        for(int i=0;i<url.length()-1;i++)
+        {
+            if(url.charAt(i)=='v' && url.charAt(i+1)=='=')
+            {
+                VideoId=url.substring(i+2,i+13);
+                break;
+            }
+        }
+        return VideoId;
+    }
+    public PoojaModel(int id,String title,String desc,String contentURL,boolean status)
+    {
+        this.id=id;
         this.title=title;
         this.desc=desc;
         this.contentURL=contentURL;
         this.status=status;
+        this.VideoId=VideoIdFromUrl(contentURL);
+    }
+
+    public String getVideoId() {
+        return VideoId;
+    }
+
+    public void setVideoId(String videoId) {
+        VideoId = videoId;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public String getImg() {
-        return img;
+    public int getId() {
+        return id;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

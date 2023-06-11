@@ -41,13 +41,13 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
 
         if(day.equals("Monday")) {
 
-            arrPooja.add(new PoojaModel("img url here", "monday 1", "desc", "https://www.youtube.com/watch?v=gXWXKjR-qII", false));
-            arrPooja.add(new PoojaModel("img url here", "monday 2", "desc", "https://www.youtube.com/watch?v=O1UqQhhA3Ns", false));
+            arrPooja.add(new PoojaModel(1, "monday 1", "desc", "https://www.youtube.com/watch?v=gXWXKjR-qII", false));
+//            arrPooja.add(new PoojaModel("img url here", "monday 2", "desc", "https://www.youtube.com/watch?v=O1UqQhhA3Ns", false));
         }
         if(day.equals("Tuesday")) {
 
-            arrPooja.add(new PoojaModel("img url here", "tuesday 1", "desc", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", false));
-            arrPooja.add(new PoojaModel("img url here", "2nd title", "desc lorem10", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", true));
+//            arrPooja.add(new PoojaModel("img url here", "tuesday 1", "desc", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", false));
+//            arrPooja.add(new PoojaModel("img url here", "2nd title", "desc lorem10", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", true));
         }
         RecyclerPoojaAdapter adapter=new RecyclerPoojaAdapter(this,arrPooja,this);
         recyclerView.setAdapter(adapter);
@@ -75,7 +75,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     public void onItemClicked(PoojaModel poojaModel) {
         Intent i=new Intent(this,VideoPlayerActivity.class);
         currentPooja=poojaModel;
-        launcher.launch(poojaModel.getContentURL());
+        launcher.launch(poojaModel.getVideoId());
 
 //        i.putExtra("contentURL",poojaModel.getContentURL());
 

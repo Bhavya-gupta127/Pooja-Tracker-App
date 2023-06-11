@@ -1,5 +1,6 @@
 package com.example.poojatracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -33,10 +34,12 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
         ViewHolder viewHolder=new ViewHolder(view);
         return viewHolder;
     }
-
+    //! no idea why we have to supresslint
+    @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.img.setImageURI(Uri.parse(arrPooja.get(position).img));
+        String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/0.jpg";
+        holder.img.setImageURI(Uri.parse(thumnail));
         holder.status.setChecked(arrPooja.get(position).status);
         holder.title.setText(arrPooja.get(position).title);
         holder.desc.setText(arrPooja.get(position).desc);
