@@ -3,10 +3,19 @@ package com.example.poojatracker;
 public class PoojaModel {
     int id;
     String title,desc,contentURL,VideoId;
-    int status;
+    boolean status;
 
     public PoojaModel() {
 
+    }
+
+    public PoojaModel(int id,String title,String desc,String contentURL, int intstatus) {
+        this.id=id;
+        this.title=title;
+        this.desc=desc;
+        this.contentURL=contentURL;
+        this.status= intstatus!=0;
+        this.VideoId=VideoIdFromUrl(contentURL);
     }
 
     public String VideoIdFromUrl(String url)
@@ -22,7 +31,7 @@ public class PoojaModel {
         }
         return VideoId;
     }
-    public PoojaModel(int id,String title,String desc,String contentURL,int status)
+    public PoojaModel(int id,String title,String desc,String contentURL,boolean status)
     {
         this.id=id;
         this.title=title;
@@ -38,10 +47,6 @@ public class PoojaModel {
 
     public void setVideoId(String videoId) {
         VideoId = videoId;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public int getId() {
@@ -72,12 +77,15 @@ public class PoojaModel {
         this.contentURL = contentURL;
     }
 
-    public int isStatus() {
-        return status;
-    }
-
     public String getContentURL() {
         return contentURL;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 }

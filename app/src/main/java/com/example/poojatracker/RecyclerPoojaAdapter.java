@@ -3,6 +3,7 @@ package com.example.poojatracker;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
     Context context;
     ArrayList<PoojaModel>arrPooja;
     SelectListener listener;
+
     RecyclerPoojaAdapter(Context context, ArrayList<PoojaModel>arrPooja,SelectListener listener)
     {
         this.context=context;
@@ -38,9 +40,10 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/0.jpg";
+        String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/2.jpg";
         holder.img.setImageURI(Uri.parse(thumnail));
-        holder.status.setChecked(arrPooja.get(position).status!=0);
+        Log.d("DBMadness", String.valueOf(arrPooja.get(position).status));
+        holder.status.setChecked(arrPooja.get(position).status);
         holder.title.setText(arrPooja.get(position).title);
         holder.desc.setText(arrPooja.get(position).desc);
         holder.contentURL.setText(arrPooja.get(position).contentURL);
@@ -51,6 +54,12 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
             @Override
             public void onClick(View v) {
                 listener.onItemClicked(arrPooja.get(position));
+            }
+        });
+        holder.status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onCheckboxClicked(arrPooja.get(position));
             }
         });
 
@@ -74,8 +83,7 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
             status=itemView.findViewById(R.id.status);
             img=itemView.findViewById(R.id.pooja_img);
             cardview=itemView.findViewById(R.id.mainCard);
-
-
         }
+
     }
 }

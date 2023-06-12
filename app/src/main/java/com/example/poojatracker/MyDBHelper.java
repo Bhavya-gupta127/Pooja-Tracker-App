@@ -96,10 +96,17 @@ public class MyDBHelper extends SQLiteOpenHelper {
         {
             PoojaModel poojaModel;
             poojaModel = new PoojaModel(
-                    cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),0
+                    cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4)
             );
             arrayList.add(poojaModel);
         }
         return arrayList;
+    }
+    public void updateDbForStatus(int id,boolean newStatus)
+    {
+            SQLiteDatabase db =this.getWritableDatabase();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(KEY_STATUS,newStatus);
+            db.update(TABLE_POOJA,contentValues,KEY_ID + " = " + id,null);
     }
 }

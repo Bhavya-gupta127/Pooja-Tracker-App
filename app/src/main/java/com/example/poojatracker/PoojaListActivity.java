@@ -1,10 +1,13 @@
 package com.example.poojatracker;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +22,10 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     ArrayList<PoojaModel> arrPooja=new ArrayList<>();
     ActivityResultLauncher<String> launcher;
     PoojaModel currentPooja;
+    MyDBHelper dbHelper;
+    RecyclerView recyclerView;
+    RecyclerPoojaAdapter adapter;
+    String day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,32 +33,20 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
 
         //getting day name from prev activity
         Intent intent = getIntent();
-        String day = intent.getStringExtra("day");
+        day = intent.getStringExtra("day");
 
         //setting day name
         TextView dayName=(TextView) findViewById(R.id.day);
         dayName.setText(day);
 
         //connecting sqlite database
-        MyDBHelper dbHelper = new MyDBHelper(this);
+         dbHelper = new MyDBHelper(this);
 
         //recycle view
-        RecyclerView recyclerView=findViewById(R.id.poojalist);
+        recyclerView=findViewById(R.id.poojalist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-//use map to do this as well
-        if(day.equals("Monday")) {
-            Log.d("dbtest",day);
-            arrPooja=dbHelper.fetchPooja(day);
-        }
-        if(day.equals("Tuesday")) {
-            arrPooja=dbHelper.fetchPooja("Tuesday");
-        }
-//        ...
-
-
-        RecyclerPoojaAdapter adapter=new RecyclerPoojaAdapter(this,arrPooja,this);
-        recyclerView.setAdapter(adapter);
+        arrPooja=dbHelper.fetchPooja(day);
+        recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
 
         //calling next activity for result
         launcher = registerForActivityResult(new Contract(), result -> {
@@ -61,22 +56,51 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                 if(result.equals("true"))
                 {
                     Toast.makeText(this, currentPooja.getTitle(), Toast.LENGTH_SHORT).show();
-                    currentPooja.setStatus(1);
-                    //update dp here
-//                    recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
+                    //update arrPooja and db
+                    dbHelper.updateDbForStatus(currentPooja.getId(),true);
+                    currentPooja.setStatus(true);
+                    arrPooja=dbHelper.fetchPooja(day);
+                    recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
                 }
-//                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(this, "resumed", Toast.LENGTH_SHORT).show();
+        arrPooja=dbHelper.fetchPooja(day);
+    }
+
+    @Override
     public void onItemClicked(PoojaModel poojaModel) {
         Intent i=new Intent(this,VideoPlayerActivity.class);
-        currentPooja=poojaModel;
-        launcher.launch(poojaModel.getVideoId());
-        //!add promt to prevent acidental clicks
-//        Toast.makeText(this, poojaModel.getTitle(), Toast.LENGTH_SHORT).show();
+        new AlertDialog.Builder(this)
+                .setTitle("Go Back?")
+                .setMessage("Mumma glti so back press ho gya toh Cancel pe click krdo")
+                .setPositiveButton("Go to Video", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        currentPooja=poojaModel;
+                        launcher.launch(poojaModel.getVideoId());
+                    }
+                })
+                .setNeutralButton("Cancel",null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
+
+    @Override
+    public void onCheckboxClicked(PoojaModel poojaModel) {
+        Log.d("checkbox", String.valueOf(poojaModel.isStatus()));
+        //update db here
+        dbHelper.updateDbForStatus(poojaModel.getId(),!poojaModel.isStatus());
+        //update arrList
+        arrPooja=dbHelper.fetchPooja(day);
+
+        poojaModel.setStatus(!poojaModel.isStatus());
+    }
+
+
 }

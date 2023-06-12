@@ -60,7 +60,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Go Back?")
                 .setMessage("Mumma glti so back press ho gya toh Cancel pe click krdo")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton("Completed", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //check the checkbox
                         Intent resultIntent = new Intent();
@@ -71,7 +71,17 @@ public class VideoPlayerActivity extends AppCompatActivity {
                         VideoPlayerActivity.super.onBackPressed();
                     }
                 })
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton("Not Completed", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //check the checkbox
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("result", "false");
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+                        VideoPlayerActivity.super.onBackPressed();
+                    }
+                })
+                .setNeutralButton("Cancel", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

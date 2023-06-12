@@ -6,6 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".PoojaAddActivity">
 
+    <CheckBox
+        android:id="@+id/checkThursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="192dp"
+        android:text="Thu"
+        app:layout_constraintBottom_toTopOf="@+id/submitData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <CheckBox
+        android:id="@+id/checkFriday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="248dp"
+        android:text="Fri"
+        app:layout_constraintBottom_toTopOf="@+id/submitData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <CheckBox
+        android:id="@+id/checkSaturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:text="Sat"
+        app:layout_constraintBottom_toTopOf="@+id/submitData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
+        app:layout_constraintVertical_bias="0.476" />
+
+    <CheckBox
+        android:id="@+id/checkSunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="352dp"
+        android:text="Sun"
+        app:layout_constraintBottom_toTopOf="@+id/submitData"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
+        app:layout_constraintVertical_bias="0.476" />
+
     <EditText
         android:id="@+id/addTitle"
         android:layout_width="wrap_content"
@@ -83,7 +127,7 @@
         android:id="@+id/checkmonday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:text="Mon"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +138,7 @@
         android:id="@+id/checkWednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
+        android:layout_marginStart="128dp"
         android:text="Wed"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,11 +146,11 @@
         app:layout_constraintVertical_bias="0.476" />
 
     <CheckBox
-        android:id="@+id/checktuesday2"
+        android:id="@+id/checktuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:text="tue"
+        android:layout_marginStart="68dp"
+        android:text="Tue"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
