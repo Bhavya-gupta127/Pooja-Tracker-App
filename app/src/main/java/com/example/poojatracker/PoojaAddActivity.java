@@ -28,7 +28,7 @@ public class PoojaAddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pooja_add);
-
+//        ! add custom video add option
         Button submitJson = findViewById(R.id.submitJSON);
         EditText jsonUrl = findViewById(R.id.addJsonUrl);
 
@@ -37,65 +37,47 @@ public class PoojaAddActivity extends AppCompatActivity {
 
         //database
         MyDBHelper dbHelper = new MyDBHelper(this);
-
+        String[] dayMapping=new String[] {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
         submitJson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(PoojaAddActivity.this, jsonUrl.getText(), Toast.LENGTH_SHORT).show();
                 String Url = String.valueOf(jsonUrl.getText());
-
                 //testing
                 Url = "https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/PoojaList.json";
-//                Url="http://worldtimeapi.org/api/timezone/Asia/Kolkata"; json object
-
-                Log.d("TestJson", "start");
-
                 JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, Url, null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-//                        PoojaModel poojaModel=new PoojaModel();
                         try {
                             for(int i=0;i<response.length();i++)
                             {
-                                JSONObject object= response.getJSONObject(0);
+                                JSONObject object= response.getJSONObject(i);
                                 int id=object.getInt("id");
                                 String title=object.getString("title");
                                 String desc=object.getString("desc");
                                 String contentUrl=object.getString("contentURL");
+                                JSONArray days = object.getJSONArray("days");
+                                for(int j=0;j<days.length();j++)
+                                    if(days.getInt(j)==1)
+                                        dbHelper.addDay(id,dayMapping[j]);
                                 boolean status =false;
-                                Log.d("testjson", String.valueOf(id));
-                                Log.d("testjson",title);
-                                Log.d("testjson",contentUrl);
+
                                 dbHelper.addPooja(id,title,desc,contentUrl,status);
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("TestJson", String.valueOf(response));
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(PoojaAddActivity.this, "API Error Please check your URL and Internet connection", Toast.LENGTH_SHORT).show();
                         Log.d("TestJson", String.valueOf(error));
                     }
                 });
                 requestQueue.add(jsonArrayRequest);
-//                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, Url, null, new Response.Listener<JSONObject>() {
-//                    @Override
-//                    public void onResponse(JSONObject response) {
-//                        Log.d("TestJson","Positive");
-//                        Toast.makeText((Context) PoojaAddActivity.this, (CharSequence) response, Toast.LENGTH_SHORT).show();
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("TestJson","negative");
-//                        Toast.makeText(PoojaAddActivity.this, "API Error Please check your URL and Internet connection", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                Volley.newRequestQueue(PoojaAddActivity.this).add(request);
+
             }
         });
     }

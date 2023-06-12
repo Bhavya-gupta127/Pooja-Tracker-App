@@ -35,40 +35,23 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         //connecting sqlite database
         MyDBHelper dbHelper = new MyDBHelper(this);
 
-//        dbHelper.addPooja(1,"Inserting Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=rK4walNCMzI&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=90",false);
-//        dbHelper.addDay(1,"Monday");
-//        dbHelper.addDay(1,"Tuesday");
-//
-//        dbHelper.addPooja(2,"Fetch the Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=ZDWg9qFwIIY&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=91",false);
-//        dbHelper.addDay(2,"Tuesday");
-//
-//        dbHelper.addDay(2,"Saturday");
-//
-//        dbHelper.addPooja(3,"asdfasdf Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=rK4walNCMzI&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=90",false);
-
-
         //recycle view
         RecyclerView recyclerView=findViewById(R.id.poojalist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //making object of poojamodel to pass in array arrpooja
-//        PoojaModel model = new PoojaModel("img url here","title","desc","https://www.youtube.com/watch?v=FEqF1_jDV-A&t=2982s",false);
-
+//use map to do this as well
         if(day.equals("Monday")) {
             Log.d("dbtest",day);
             arrPooja=dbHelper.fetchPooja(day);
-//            arrPooja.add(new PoojaModel(4, "monday 1", "desc", "https://www.youtube.com/watch?v=gXWXKjR-qII", 0));
-//            arrPooja.add(new PoojaModel("img url here", "monday 2", "desc", "https://www.youtube.com/watch?v=O1UqQhhA3Ns", false));
         }
         if(day.equals("Tuesday")) {
             arrPooja=dbHelper.fetchPooja("Tuesday");
-
-//            arrPooja.add(new PoojaModel("img url here", "tuesday 1", "desc", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", false));
-//            arrPooja.add(new PoojaModel("img url here", "2nd title", "desc lorem10", "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", true));
         }
+//        ...
+
+
         RecyclerPoojaAdapter adapter=new RecyclerPoojaAdapter(this,arrPooja,this);
         recyclerView.setAdapter(adapter);
-
 
         //calling next activity for result
         launcher = registerForActivityResult(new Contract(), result -> {
@@ -77,9 +60,9 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                 // Process the result
                 if(result.equals("true"))
                 {
-                Toast.makeText(this, currentPooja.getTitle(), Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(this, currentPooja.getTitle(), Toast.LENGTH_SHORT).show();
                     currentPooja.setStatus(1);
+                    //update dp here
 //                    recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
                 }
 //                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
@@ -93,13 +76,6 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         Intent i=new Intent(this,VideoPlayerActivity.class);
         currentPooja=poojaModel;
         launcher.launch(poojaModel.getVideoId());
-
-//        i.putExtra("contentURL",poojaModel.getContentURL());
-
-//        startActivityForResult(i,1);
-        //        startActivity(i);
-
-//        call next activity here
         //!add promt to prevent acidental clicks
 //        Toast.makeText(this, poojaModel.getTitle(), Toast.LENGTH_SHORT).show();
     }
