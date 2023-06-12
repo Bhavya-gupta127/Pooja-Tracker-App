@@ -59,7 +59,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         values.put(KEY_URL,contentUrl);
         values.put(KEY_STATUS,status);
         db.insert(TABLE_POOJA,null,values);
-        db.close();
+        Log.d("testjson","db updated");
     }
     public void addDay(int id,String day)
     {
@@ -68,8 +68,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
         values.put(KEY_ID,id);
         values.put(KEY_DAY,day);
         db.insert(TABLE_DAY,null,values);
-        db.close();
-
     }
 //    SELECT p.id , p.title , p.description, p.contentUrl, p.status, d.day
 //    FROM poojas p
