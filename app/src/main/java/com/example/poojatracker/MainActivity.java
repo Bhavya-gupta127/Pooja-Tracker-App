@@ -4,9 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +20,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
+            if(prevDate.equals(String.valueOf(LocalDate.now())))
+                Toast.makeText(this, "Dont Update database", Toast.LENGTH_SHORT).show();
+            else
+            {
+                Toast.makeText(this, "Update database", Toast.LENGTH_SHORT).show();
+                editor.putString("date",String.valueOf(LocalDate.now()));
+            }
+
+//            Log.d("dateset",prevDate);
+//            Log.d("dateset",String.valueOf(LocalDate.now()));
+
+        }
+
+
         Button monday=findViewById(R.id.monday);
         Button tuesday=findViewById(R.id.tuesday);
         Button wednesday=findViewById(R.id.wednesday);

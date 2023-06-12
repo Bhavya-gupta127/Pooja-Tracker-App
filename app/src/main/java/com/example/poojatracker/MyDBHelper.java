@@ -38,9 +38,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
                     "(" + KEY_ID +  " INTEGER PRIMARY KEY, " + KEY_TITLE + " TEXT, " + KEY_DESC + " TEXT, " + KEY_URL + " TEXT, " + KEY_STATUS + " BOOLEAN " + ")"
             );
 
-
+//        CREATE TABLE days2(id INTEGER , day TEXT,PRIMARY KEY(id,day) );
             db.execSQL("CREATE TABLE " + TABLE_DAY +
-                    "(" + KEY_ID +  " INTEGER , " + KEY_DAY + " TEXT " +  " ) "
+                    "(" + KEY_ID +  " INTEGER , " + KEY_DAY + " TEXT, PRIMARY KEY ( " + KEY_ID + " , " +KEY_DAY +  ") ); "
             );
 
     }
@@ -96,10 +96,17 @@ public class MyDBHelper extends SQLiteOpenHelper {
         {
             PoojaModel poojaModel;
             poojaModel = new PoojaModel(
-                    cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),0
+                    cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4)
             );
             arrayList.add(poojaModel);
         }
         return arrayList;
+    }
+    public void updateDbForStatus(int id,boolean newStatus)
+    {
+            SQLiteDatabase db =this.getWritableDatabase();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(KEY_STATUS,newStatus);
+            db.update(TABLE_POOJA,contentValues,KEY_ID + " = " + id,null);
     }
 }
