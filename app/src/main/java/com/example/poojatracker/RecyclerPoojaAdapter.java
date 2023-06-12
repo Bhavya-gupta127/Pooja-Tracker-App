@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdapter.ViewHolder> {
@@ -40,8 +42,19 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
     @SuppressLint("RecyclerView")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/2.jpg";
-        holder.img.setImageURI(Uri.parse(thumnail));
+
+        String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/0.jpg";
+        Log.d("imageissue", String.valueOf(Uri.parse(thumnail)));
+        try {
+            ImageView imageView = holder.img;
+            String imageUrl = thumnail; // Replace with your image URL
+            Picasso.get()
+                    .load(imageUrl)
+                    .into(imageView);
+        }catch (Exception e){
+            Log.d("imageissue", "ex");
+            e.printStackTrace();
+        }
         Log.d("DBMadness", String.valueOf(arrPooja.get(position).status));
         holder.status.setChecked(arrPooja.get(position).status);
         holder.title.setText(arrPooja.get(position).title);
