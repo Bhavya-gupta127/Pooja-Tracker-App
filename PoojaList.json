@@ -1,5 +1,4 @@
-{
-    "Poojas": [
+[
         {
             "id": 1,
             "title": "First title",
@@ -14,5 +13,4 @@
             "contentURL": "https://www.youtube.com/watch?v=x7g8qmE8Jg0 ",
             "status": false
         }
-    ]
-}
+]

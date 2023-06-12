@@ -40,7 +40,7 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String thumnail="https://img.youtube.com/vi/"+arrPooja.get(position).VideoId+"/0.jpg";
         holder.img.setImageURI(Uri.parse(thumnail));
-        holder.status.setChecked(arrPooja.get(position).status);
+        holder.status.setChecked(arrPooja.get(position).status!=0);
         holder.title.setText(arrPooja.get(position).title);
         holder.desc.setText(arrPooja.get(position).desc);
         holder.contentURL.setText(arrPooja.get(position).contentURL);
