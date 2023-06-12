@@ -31,6 +31,19 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         TextView dayName=(TextView) findViewById(R.id.day);
         dayName.setText(day);
 
+        //connecting sqlite database
+        MyDBHelper dbHelper = new MyDBHelper(this);
+        dbHelper.addPooja(1,"Inserting Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=rK4walNCMzI&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=90",false);
+        dbHelper.addDay(1,"MONDAY");
+        dbHelper.addDay(1,"TUESDAY");
+        dbHelper.addDay(1,"SATURDAY");
+
+        dbHelper.addPooja(2,"Fetch the Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=ZDWg9qFwIIY&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=91",false);
+        dbHelper.addDay(2,"TUESDAY");
+        dbHelper.addDay(2,"SATURDAY");
+
+        dbHelper.addPooja(3,"asdfasdf Data in Database","WsCube their online presence, grow their business, and reach new heights. ","https://www.youtube.com/watch?v=rK4walNCMzI&list=PLjVLYmrlmjGdDps6HAwOOVoAtBPAgIOXL&index=90",false);
+
 
         //recycle view
         RecyclerView recyclerView=findViewById(R.id.poojalist);
@@ -41,7 +54,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
 
         if(day.equals("Monday")) {
 
-            arrPooja.add(new PoojaModel(1, "monday 1", "desc", "https://www.youtube.com/watch?v=gXWXKjR-qII", false));
+            arrPooja.add(new PoojaModel(4, "monday 1", "desc", "https://www.youtube.com/watch?v=gXWXKjR-qII", false));
 //            arrPooja.add(new PoojaModel("img url here", "monday 2", "desc", "https://www.youtube.com/watch?v=O1UqQhhA3Ns", false));
         }
         if(day.equals("Tuesday")) {
