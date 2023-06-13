@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Pooja Tracker</string>
+    <string name="app_name">Pooja Scheduler</string>
+    <string name="btn_ems">8</string>
+    <string name="btn_textsize">20sp</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PoojaListActivity extends AppCompatActivity implements SelectListener{
@@ -30,6 +32,22 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pooja_list);
+        getSupportActionBar().hide();
+
+        //connecting sqlite database
+        dbHelper = new MyDBHelper(this);
+
+        //resetting everyday
+        SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
+            if(!prevDate.equals(String.valueOf(LocalDate.now())))
+            {
+                editor.putString("date",String.valueOf(LocalDate.now()));
+                dbHelper.updateDbForNewDay();
+            }
+        }
 
         //getting day name from prev activity
         Intent intent = getIntent();
@@ -39,14 +57,17 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         TextView dayName=(TextView) findViewById(R.id.day);
         dayName.setText(day);
 
-        //connecting sqlite database
-         dbHelper = new MyDBHelper(this);
 
         //recycle view
         recyclerView=findViewById(R.id.poojalist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         arrPooja=dbHelper.fetchPooja(day);
         recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
+        // Apply custom item decoration
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing_between_items);
+        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(spacingInPixels);
+        recyclerView.addItemDecoration(itemDecoration);
+
 
         //calling next activity for result
         launcher = registerForActivityResult(new Contract(), result -> {
@@ -55,7 +76,6 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                 // Process the result
                 if(result.equals("true"))
                 {
-                    Toast.makeText(this, currentPooja.getTitle(), Toast.LENGTH_SHORT).show();
                     //update arrPooja and db
                     dbHelper.updateDbForStatus(currentPooja.getId(),true);
                     currentPooja.setStatus(true);
@@ -70,7 +90,6 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "resumed", Toast.LENGTH_SHORT).show();
         arrPooja=dbHelper.fetchPooja(day);
     }
 
@@ -78,16 +97,16 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     public void onItemClicked(PoojaModel poojaModel) {
         Intent i=new Intent(this,VideoPlayerActivity.class);
         new AlertDialog.Builder(this)
-                .setTitle("Go Back?")
-                .setMessage("Mumma glti so back press ho gya toh Cancel pe click krdo")
-                .setPositiveButton("Go to Video", new DialogInterface.OnClickListener() {
+                .setTitle("Play Video?")
+                .setMessage("Are you sure you want to start "+poojaModel.getTitle())
+                .setPositiveButton("Yes,Go to Video", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         currentPooja=poojaModel;
                         launcher.launch(poojaModel.getVideoId());
                     }
                 })
-                .setNeutralButton("Cancel",null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setNeutralButton("No, Go Back",null)
+                .setIcon(R.drawable.omicon)
                 .show();
     }
 
