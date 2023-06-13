@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker;
@@ -43,8 +44,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 String videoId = finalId;
-                youTubePlayer.loadVideo(videoId, 0);
-                youTubePlayer.pause(); // laggy but works to stop auto play
+//                youTubePlayer.setPlaybackRate(2);
+                youTubePlayer.setPlaybackRate(PlayerConstants.PlaybackRate.RATE_2);
+
+//                youTubePlayer.pause(); //     laggy but works to stop auto play
+                youTubePlayer.cueVideo(videoId, 0);
             }
         });
 
@@ -87,7 +91,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                     }
                 })
                 .setNeutralButton("Continue Watching (Stay Here)", null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.omicon)
                 .show();
     }
 }

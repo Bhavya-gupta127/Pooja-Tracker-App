@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         friday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra("day","Firday");
+                intent.putExtra("day","Friday");
                 startActivity(intent);
             }
         });

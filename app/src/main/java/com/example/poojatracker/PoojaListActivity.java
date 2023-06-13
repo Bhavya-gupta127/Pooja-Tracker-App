@@ -106,7 +106,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                     }
                 })
                 .setNeutralButton("No, Go Back",null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.omicon)
                 .show();
     }
 
