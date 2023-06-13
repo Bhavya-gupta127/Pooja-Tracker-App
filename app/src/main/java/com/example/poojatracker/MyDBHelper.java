@@ -109,4 +109,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
             contentValues.put(KEY_STATUS,newStatus);
             db.update(TABLE_POOJA,contentValues,KEY_ID + " = " + id,null);
     }
+    public void updateDbForNewDay()
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(KEY_STATUS,false);
+        db.update(TABLE_POOJA,contentValues,null,null);
+    }
 }

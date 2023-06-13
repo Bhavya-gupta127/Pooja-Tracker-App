@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,32 +20,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
-        SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
-            if(prevDate.equals(String.valueOf(LocalDate.now())))
-                Toast.makeText(this, "Dont Update database", Toast.LENGTH_SHORT).show();
-            else
-            {
-                Toast.makeText(this, "Update database", Toast.LENGTH_SHORT).show();
-                editor.putString("date",String.valueOf(LocalDate.now()));
-            }
-
-//            Log.d("dateset",prevDate);
-//            Log.d("dateset",String.valueOf(LocalDate.now()));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.status_bar_color));
         }
-
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_main);
 
         Button monday=findViewById(R.id.monday);
         Button tuesday=findViewById(R.id.tuesday);
         Button wednesday=findViewById(R.id.wednesday);
+        Button thursday=findViewById(R.id.thurday);
+        Button friday=findViewById(R.id.friday);
+        Button saturday=findViewById(R.id.saturday);
+        Button sunday=findViewById(R.id.sunday);
         Button add=findViewById(R.id.add);
-//      !add ..4 more
         Intent intent=new Intent(MainActivity.this,PoojaListActivity.class);
 
         monday.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +50,42 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        wednesday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("day","Wednesday");
+                startActivity(intent);
+            }
+        });
+        thursday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("day","Thursday");
+                startActivity(intent);
+            }
+        });
+        friday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("day","Firday");
+                startActivity(intent);
+            }
+        });
+        saturday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("day","Saturday");
+                startActivity(intent);
+            }
+        });
+        sunday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("day","Sunday");
+                startActivity(intent);
+            }
+        });
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

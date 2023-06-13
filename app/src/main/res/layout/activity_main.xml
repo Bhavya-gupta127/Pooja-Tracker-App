@@ -4,85 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/background"
+
+    >
+
+>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="@string/app_name"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.088" />
+        app:layout_constraintVertical_bias="0.022" />
 
-    <Button
+    <android.widget.Button
+        android:textSize="20sp"
+        android:ems="@string/btn_ems"
+        android:background="@drawable/gradientbtn"
         android:id="@+id/monday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
         android:text="monday"
+        app:layout_constraintBottom_toTopOf="@+id/tuesday"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.07999998"
+        app:layout_constraintVertical_chainStyle="spread" />
 
-    <Button
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
         android:id="@+id/tuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:ems="@string/btn_ems"
+        android:padding="5dp"
         android:text="Tuesday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@+id/wednesday"
+        app:layout_constraintEnd_toEndOf="@+id/monday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/monday"
+        app:layout_constraintTop_toBottomOf="@+id/monday" />
 
-    <Button
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
         android:id="@+id/wednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:ems="@string/btn_ems"
         android:text="Wednesday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@+id/thurday"
+        app:layout_constraintEnd_toEndOf="@+id/tuesday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/tuesday"
+        app:layout_constraintTop_toBottomOf="@+id/tuesday" />
 
-    <Button
-        android:id="@+id/button4"
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
+        android:id="@+id/thurday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="280dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:layout_editor_absoluteX="158dp" />
+        android:ems="@string/btn_ems"
+        android:text="Thurday"
 
-    <Button
-        android:id="@+id/button5"
+        app:layout_constraintBottom_toTopOf="@+id/friday"
+        app:layout_constraintEnd_toEndOf="@+id/wednesday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/wednesday"
+        app:layout_constraintTop_toBottomOf="@+id/wednesday" />
+
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
+        android:id="@+id/friday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="352dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:layout_editor_absoluteX="158dp" />
+        android:ems="@string/btn_ems"
+        android:text="Friday"
 
-    <Button
-        android:id="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/saturday"
+        app:layout_constraintEnd_toEndOf="@+id/thurday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/thurday"
+        app:layout_constraintTop_toBottomOf="@+id/thurday" />
+
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
+        android:id="@+id/saturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="444dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:layout_editor_absoluteX="158dp" />
+        android:ems="@string/btn_ems"
+        android:text="Saturday"
+        app:layout_constraintBottom_toTopOf="@+id/sunday"
+        app:layout_constraintEnd_toEndOf="@+id/friday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/friday"
+        app:layout_constraintTop_toBottomOf="@+id/friday" />
 
-    <Button
+    <android.widget.Button
+        android:textSize="20sp"
+
+        android:background="@drawable/gradientbtn"
+        android:id="@+id/sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="@string/btn_ems"
+        android:text="Sunday"
+
+        app:layout_constraintBottom_toTopOf="@+id/add"
+        app:layout_constraintEnd_toEndOf="@+id/friday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/friday"
+        app:layout_constraintTop_toBottomOf="@+id/saturday" />
+
+    <android.widget.Button
         android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="520dp"
+        android:background="@drawable/addbtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:textSize="15sp"
         android:text="add"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

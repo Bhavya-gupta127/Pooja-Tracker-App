@@ -4,155 +4,221 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PoojaAddActivity">
+    tools:context=".PoojaAddActivity"
+    android:background="@drawable/background_longer"
+
+    >
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkThursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="192dp"
         android:text="Thu"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintBottom_toBottomOf="@+id/checkFriday"
+        app:layout_constraintEnd_toStartOf="@+id/checkFriday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkWednesday"
+        app:layout_constraintTop_toTopOf="@+id/checkFriday" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkFriday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="248dp"
         android:text="Fri"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintBottom_toBottomOf="@+id/checkSaturday"
+        app:layout_constraintEnd_toStartOf="@+id/checkSaturday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkThursday"
+        app:layout_constraintTop_toTopOf="@+id/checkSaturday" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkSaturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="300dp"
         android:text="Sat"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintBottom_toBottomOf="@+id/checkSunday"
+        app:layout_constraintEnd_toStartOf="@+id/checkSunday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkFriday"
+        app:layout_constraintTop_toTopOf="@+id/checkSunday" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkSunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="352dp"
         android:text="Sun"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkSaturday"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.894" />
 
     <EditText
+        android:background="@drawable/edittextbox"
+        android:padding="5dp"
         android:id="@+id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Title"
+        android:hint="Title"
+        app:layout_constraintBottom_toTopOf="@+id/addDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
 
     <EditText
-        android:id="@+id/addDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Desciption"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
+        android:background="@drawable/edittextbox"
+        android:padding="5dp"
         android:id="@+id/addContentUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="232dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Content Url"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Content Url"
+        android:inputType="textUri"
+        app:layout_constraintBottom_toTopOf="@+id/addDaysText"
+        app:layout_constraintEnd_toEndOf="@+id/addDescription"
+        app:layout_constraintStart_toStartOf="@+id/addDescription"
+        app:layout_constraintTop_toBottomOf="@+id/addDescription" />
 
     <EditText
+        android:background="@drawable/edittextbox"
+        android:padding="5dp"
+        android:id="@+id/addDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Desciption"
+        app:layout_constraintBottom_toTopOf="@+id/addContentUrl"
+        app:layout_constraintEnd_toEndOf="@+id/addTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/addTitle"
+        app:layout_constraintTop_toBottomOf="@+id/addTitle" />
+
+    <EditText
+        android:background="@drawable/edittextbox"
+        android:padding="5dp"
         android:id="@+id/addJsonUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Link to JSON file"
+        android:inputType="textUri"
+        android:hint="Paste Link of JSON file"
+        android:text="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/PoojaList.json"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintEnd_toStartOf="@+id/submitJSON"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.90999997" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submitData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Submit"
-        app:layout_constraintBottom_toTopOf="@+id/addJsonUrl"
+        android:background="@drawable/gradientbtn"
+        app:layout_constraintBottom_toTopOf="@+id/addJsontext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.658" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submitJSON"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit JSON"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/gradientbtn"
+        android:text="ADD"
+        app:layout_constraintBottom_toBottomOf="@+id/addJsonUrl"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addJsonUrl" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/addJsonUrl"
+        app:layout_constraintTop_toTopOf="@+id/addJsonUrl" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkmonday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:text="Mon"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
+        app:layout_constraintBottom_toBottomOf="@+id/checktuesday"
+        app:layout_constraintEnd_toStartOf="@+id/checktuesday"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintTop_toTopOf="@+id/checktuesday" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checkWednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
         android:text="Wed"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintBottom_toBottomOf="@+id/checkThursday"
+        app:layout_constraintEnd_toStartOf="@+id/checkThursday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checktuesday"
+        app:layout_constraintTop_toTopOf="@+id/checkThursday" />
 
     <CheckBox
+        android:buttonTint="@color/white"
+        android:textColor="@color/white"
         android:id="@+id/checktuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
         android:text="Tue"
-        app:layout_constraintBottom_toTopOf="@+id/submitData"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContentUrl"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintBottom_toBottomOf="@+id/checkWednesday"
+        app:layout_constraintEnd_toStartOf="@+id/checkWednesday"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/checkmonday"
+        app:layout_constraintTop_toTopOf="@+id/checkWednesday" />
+
+    <TextView
+        android:id="@+id/addJsontext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="Add Link to existing Playlist"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/addJsonUrl"
+        app:layout_constraintEnd_toEndOf="@+id/submitJSON"
+        app:layout_constraintStart_toStartOf="@+id/addJsonUrl" />
+
+    <TextView
+        android:id="@+id/addDaysText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Days"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/checkSunday"
+        app:layout_constraintEnd_toEndOf="@+id/checkSunday"
+        app:layout_constraintStart_toStartOf="@+id/checkmonday"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR?"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/addJsontext"
+        app:layout_constraintEnd_toEndOf="@+id/submitData"
+        app:layout_constraintStart_toStartOf="@+id/submitData"
+        app:layout_constraintTop_toBottomOf="@+id/submitData" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

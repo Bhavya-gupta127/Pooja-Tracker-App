@@ -1,5 +1,6 @@
 package com.example.poojatracker;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +30,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
-        String id = "gXWXKjR-qII";
+        getSupportActionBar().hide();
+
+        String id = "gXWXKjR-qII"; //default video
         Intent intent = getIntent();
         id=intent.getStringExtra("contentURL");
 
@@ -40,6 +44,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 String videoId = finalId;
                 youTubePlayer.loadVideo(videoId, 0);
+                youTubePlayer.pause(); // laggy but works to stop auto play
             }
         });
 
@@ -59,8 +64,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
     public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setTitle("Go Back?")
-                .setMessage("Mumma glti so back press ho gya toh Cancel pe click krdo")
-                .setPositiveButton("Completed", new DialogInterface.OnClickListener() {
+                .setMessage("Please Share the Status of Completion")
+                .setPositiveButton("Completed( Go Back )", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //check the checkbox
                         Intent resultIntent = new Intent();
@@ -71,7 +76,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                         VideoPlayerActivity.super.onBackPressed();
                     }
                 })
-                .setNegativeButton("Not Completed", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Not Completed (Go Back)", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //check the checkbox
                         Intent resultIntent = new Intent();
@@ -81,7 +86,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                         VideoPlayerActivity.super.onBackPressed();
                     }
                 })
-                .setNeutralButton("Cancel", null)
+                .setNeutralButton("Continue Watching (Stay Here)", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

@@ -35,14 +35,13 @@ public class PoojaAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pooja_add);
 
-
+        getSupportActionBar().hide();
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(this);
 
         //database
         MyDBHelper dbHelper = new MyDBHelper(this);
-        String[] dayMapping=new String[] {"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
-
+        String[] dayMapping = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
 
         //for json add
@@ -58,22 +57,28 @@ public class PoojaAddActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            for(int i=0;i<response.length();i++)
-                            {
-                                JSONObject object= response.getJSONObject(i);
-                                int id=object.getInt("id");
-                                String title=object.getString("title");
-                                String desc=object.getString("desc");
-                                String contentUrl=object.getString("contentURL");
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject object = response.getJSONObject(i);
+                                int id = object.getInt("id");
+                                String title = object.getString("title");
+                                String desc = object.getString("desc");
+                                String contentUrl = object.getString("contentURL");
                                 JSONArray days = object.getJSONArray("days");
-                                for(int j=0;j<days.length();j++)
-                                    if(days.getInt(j)==1)
-                                        dbHelper.addDay(id,dayMapping[j]);
-                                boolean status =false;
+                                for (int j = 0; j < days.length(); j++)
+                                    if (days.getInt(j) == 1)
+                                        dbHelper.addDay(id, dayMapping[j]);
+                                boolean status = false;
 
-                                dbHelper.addPooja(id,title,desc,contentUrl,status);
+                                try {
+                                    dbHelper.addPooja(id, title, desc, contentUrl, status);
+                                } catch (Exception e) {
+                                    Toast.makeText(PoojaAddActivity.this, "There was an unexpected error, Check you URL again", Toast.LENGTH_SHORT).show();
+                                }
+
                             }
 
+                            Toast.makeText(PoojaAddActivity.this, "Added Succesfully", Toast.LENGTH_SHORT).show();
+                            jsonUrl.setText("");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -94,26 +99,60 @@ public class PoojaAddActivity extends AppCompatActivity {
         EditText addTitle = findViewById(R.id.addTitle);
         EditText addDescription = findViewById(R.id.addDescription);
         EditText addContentUrl = findViewById(R.id.addContentUrl);
-        CheckBox checkmonday=findViewById(R.id.checkmonday);
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) CheckBox checktuesday=findViewById(R.id.checktuesday);
-        CheckBox checkwednesday=findViewById(R.id.checkWednesday);
-        CheckBox checkthursday=findViewById(R.id.checkThursday);
-        CheckBox checkfriday=findViewById(R.id.checkFriday);
-        CheckBox checksaturday=findViewById(R.id.checkSaturday);
-        CheckBox checksunday=findViewById(R.id.checkSunday);
+        CheckBox checkmonday = findViewById(R.id.checkmonday);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) CheckBox checktuesday = findViewById(R.id.checktuesday);
+        CheckBox checkwednesday = findViewById(R.id.checkWednesday);
+        CheckBox checkthursday = findViewById(R.id.checkThursday);
+        CheckBox checkfriday = findViewById(R.id.checkFriday);
+        CheckBox checksaturday = findViewById(R.id.checkSaturday);
+        CheckBox checksunday = findViewById(R.id.checkSunday);
         Button submitData = findViewById(R.id.submitData);
         submitData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Random r = new Random();
-                int id = r.nextInt(999999-100000) + 100000;
-                boolean[] mydays= new boolean[]{checkmonday.isChecked(),checktuesday.isChecked(),checkwednesday.isChecked(),checkthursday.isChecked(),checkfriday.isChecked(),checksaturday.isChecked(),checksunday.isChecked()};
-                dbHelper.addPooja(id,String.valueOf(addTitle.getText()),String.valueOf(addDescription.getText()),String.valueOf(addContentUrl.getText()),false);
-                for(int j=0;j<mydays.length;j++) {
-                    Log.d("Finalbacked", String.valueOf(mydays[j]));
-                    if(mydays[j])
-                        dbHelper.addDay(id,dayMapping[j]);
+                if (addContentUrl.getText().length() == 0) {
+                    Toast.makeText(PoojaAddActivity.this, "Please Enter Valid Url", Toast.LENGTH_SHORT).show();
                 }
+                if (addTitle.getText().length() == 0) {
+                    Toast.makeText(PoojaAddActivity.this, "Please Enter Title", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    try {
+
+                        Random r = new Random();
+                        int id = r.nextInt(999999 - 100000) + 100000;
+                        boolean[] mydays = new boolean[]{checkmonday.isChecked(), checktuesday.isChecked(), checkwednesday.isChecked(), checkthursday.isChecked(), checkfriday.isChecked(), checksaturday.isChecked(), checksunday.isChecked()};
+                        dbHelper.addPooja(id, String.valueOf(addTitle.getText()), String.valueOf(addDescription.getText()), String.valueOf(addContentUrl.getText()), false);
+                        boolean atleastone = false;
+                        for (int j = 0; j < mydays.length; j++) {
+                            if (mydays[j])
+                            {
+                                dbHelper.addDay(id, dayMapping[j]);
+                                atleastone = true;
+                            }
+                        }
+                        if (atleastone==false)
+                            Toast.makeText(PoojaAddActivity.this, "Select Atleast One Day", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(PoojaAddActivity.this, "Added Succesfully", Toast.LENGTH_SHORT).show();
+                            addTitle.setText("");
+                            addContentUrl.setText("");
+                            addDescription.setText("");
+                            checkmonday.setChecked(false);
+                            checktuesday.setChecked(false);
+                            checkwednesday.setChecked(false);
+                            checkthursday.setChecked(false);
+                            checkfriday.setChecked(false);
+                            checksaturday.setChecked(false);
+                            checksunday.setChecked(false);
+                        }
+
+                    } catch (Exception e) {
+                        Toast.makeText(PoojaAddActivity.this, "Unexpected Error Please Try Again Later", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
             }
         });
     }
