@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PoojaAddActivity"
     android:background="@drawable/background_longer"
+    tools:context=".PoojaAddActivity"
 
     >
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkThursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Thu"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checkFriday"
         app:layout_constraintEnd_toStartOf="@+id/checkFriday"
         app:layout_constraintHorizontal_bias="0.5"
@@ -23,12 +23,12 @@
         app:layout_constraintTop_toTopOf="@+id/checkFriday" />
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkFriday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Fri"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checkSaturday"
         app:layout_constraintEnd_toStartOf="@+id/checkSaturday"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,12 +36,12 @@
         app:layout_constraintTop_toTopOf="@+id/checkSaturday" />
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkSaturday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Sat"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checkSunday"
         app:layout_constraintEnd_toStartOf="@+id/checkSunday"
         app:layout_constraintHorizontal_bias="0.5"
@@ -49,12 +49,12 @@
         app:layout_constraintTop_toTopOf="@+id/checkSunday" />
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkSunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Sun"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/submitData"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -63,14 +63,16 @@
         app:layout_constraintVertical_bias="0.894" />
 
     <EditText
-        android:background="@drawable/edittextbox"
-        android:padding="5dp"
         android:id="@+id/addTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/edittextbox"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Title"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/addDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -79,57 +81,46 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <EditText
-        android:background="@drawable/edittextbox"
-        android:padding="5dp"
         android:id="@+id/addContentUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/edittextbox"
         android:ems="10"
         android:hint="Content Url"
         android:inputType="textUri"
+        android:padding="5dp"
+        android:textColor="@color/black"
+
+        android:textColorHint="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/addDaysText"
         app:layout_constraintEnd_toEndOf="@+id/addDescription"
         app:layout_constraintStart_toStartOf="@+id/addDescription"
         app:layout_constraintTop_toBottomOf="@+id/addDescription" />
 
     <EditText
-        android:background="@drawable/edittextbox"
-        android:padding="5dp"
         android:id="@+id/addDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/edittextbox"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Desciption"
+        android:inputType="textPersonName"
+        android:padding="5dp"
+        android:textColor="@color/black"
+
+        android:textColorHint="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/addContentUrl"
         app:layout_constraintEnd_toEndOf="@+id/addTitle"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/addTitle"
         app:layout_constraintTop_toBottomOf="@+id/addTitle" />
 
-    <EditText
-        android:background="@drawable/edittextbox"
-        android:padding="5dp"
-        android:id="@+id/addJsonUrl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textUri"
-        android:hint="Paste Link of JSON file"
-        android:text="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/PoojaList.json"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/submitJSON"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.90999997" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submitData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
         android:background="@drawable/gradientbtn"
+        android:text="Submit"
         app:layout_constraintBottom_toTopOf="@+id/addJsontext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,17 +135,51 @@
         android:text="ADD"
         app:layout_constraintBottom_toBottomOf="@+id/addJsonUrl"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exportJSON"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/addJsonUrl"
         app:layout_constraintTop_toTopOf="@+id/addJsonUrl" />
 
+    <EditText
+        android:id="@+id/addJsonUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittextbox"
+        android:ems="10"
+        android:hint="Paste Link of JSON file"
+        android:inputType="textUri"
+        android:padding="5dp"
+
+        android:text="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/PoojaList.json"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/submitJSON"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.901" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/exportJSON"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradientbtn"
+        android:text="Export"
+        app:layout_constraintBottom_toBottomOf="@+id/submitJSON"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/submitJSON"
+        app:layout_constraintTop_toTopOf="@+id/submitJSON" />
+
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkmonday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Mon"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checktuesday"
         app:layout_constraintEnd_toStartOf="@+id/checktuesday"
         app:layout_constraintHorizontal_bias="0.5"
@@ -162,12 +187,12 @@
         app:layout_constraintTop_toTopOf="@+id/checktuesday" />
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checkWednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Wed"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checkThursday"
         app:layout_constraintEnd_toStartOf="@+id/checkThursday"
         app:layout_constraintHorizontal_bias="0.5"
@@ -175,12 +200,12 @@
         app:layout_constraintTop_toTopOf="@+id/checkThursday" />
 
     <CheckBox
-        android:buttonTint="@color/white"
-        android:textColor="@color/white"
         android:id="@+id/checktuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:buttonTint="@color/white"
         android:text="Tue"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/checkWednesday"
         app:layout_constraintEnd_toStartOf="@+id/checkWednesday"
         app:layout_constraintHorizontal_bias="0.5"

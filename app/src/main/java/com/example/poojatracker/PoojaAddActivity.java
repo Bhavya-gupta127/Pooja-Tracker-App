@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import kotlin.random.URandomKt;
@@ -43,9 +49,9 @@ public class PoojaAddActivity extends AppCompatActivity {
         MyDBHelper dbHelper = new MyDBHelper(this);
         String[] dayMapping = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
-
         //for json add
         Button submitJson = findViewById(R.id.submitJSON);
+        Button exportJson = findViewById(R.id.exportJSON);
         EditText jsonUrl = findViewById(R.id.addJsonUrl);
         submitJson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +100,38 @@ public class PoojaAddActivity extends AppCompatActivity {
 
             }
         });
+        //export json
+        exportJson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String jsonString = dbHelper.exportToJson();
+                String filename = "output1.json"; // Specify the filename for the output file
+
+                try {
+                    // Create a File object with the desired file path and name
+                    File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+
+                    File file = new File(dir, filename);
+
+                    // Create a FileWriter object to write to the file
+                    FileWriter fileWriter = new FileWriter(file);
+
+                    // Write the JSON string to the file
+                    fileWriter.write(jsonString);
+
+                    // Close the FileWriter
+                    fileWriter.close();
+
+                    // File export successful
+                    // You can now access the file using its path: file.getAbsolutePath()
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // File export failed
+                }
+            }
+        });
+
+
 
         //Custom add
         EditText addTitle = findViewById(R.id.addTitle);

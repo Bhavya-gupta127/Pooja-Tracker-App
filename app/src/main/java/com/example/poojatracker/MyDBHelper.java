@@ -1,15 +1,26 @@
 package com.example.poojatracker;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyDBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="PoojaDB";
@@ -26,6 +37,12 @@ public class MyDBHelper extends SQLiteOpenHelper {
     private static final String KEY_DAY="day";
 
 
+    Map<String, Integer> daysOfWeek = new HashMap<>();
+
+    // Add entries to the map
+
+
+
 
     public MyDBHelper(@Nullable Context context) {
         super(context,DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,6 +50,14 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        daysOfWeek.put("Monday", 0);
+        daysOfWeek.put("Tuesday", 1);
+        daysOfWeek.put("Wednesday", 2);
+        daysOfWeek.put("Thursday", 3);
+        daysOfWeek.put("Friday", 4);
+        daysOfWeek.put("Saturday", 5);
+        daysOfWeek.put("Sunday", 6);
+
         //CREATE TABLE pooja(id INTEGER PRIMARY KEY,title TEXT, desc TEXT, contentUrl TEXT, status BOOLEAN)
             db.execSQL("CREATE TABLE " + TABLE_POOJA +
                     "(" + KEY_ID +  " INTEGER PRIMARY KEY, " + KEY_TITLE + " TEXT, " + KEY_DESC + " TEXT, " + KEY_URL + " TEXT, " + KEY_STATUS + " BOOLEAN " + ")"
@@ -115,5 +140,67 @@ public class MyDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues=new ContentValues();
         contentValues.put(KEY_STATUS,false);
         db.update(TABLE_POOJA,contentValues,null,null);
+    }
+
+
+    //export to json
+    public String exportToJson()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] projection = { "poojas.id", "poojas.title", "poojas.description", "poojas.contentUrl", "poojas.status", "days.day" };
+        String tableName = "poojas";
+        String joinTable = "days";
+        String joinColumn = "poojas.id";
+        String foreignKey = "days.id";
+        String query = "SELECT " + TextUtils.join(", ", projection) +
+                " FROM " + tableName +
+                " LEFT JOIN " + joinTable +
+                " ON " + joinColumn + " = " + foreignKey;
+        Cursor cursor = db.rawQuery(query, null);
+
+// Create a JSONArray to hold the result
+        JSONArray jsonArray = new JSONArray();
+
+// Process the cursor and construct the JSON objects
+        while (cursor.moveToNext()) {
+            try {
+                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
+                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
+                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex("description"));
+                @SuppressLint("Range") String contentURL = cursor.getString(cursor.getColumnIndex("contentUrl"));
+                @SuppressLint("Range") boolean status = cursor.getInt(cursor.getColumnIndex("status")) == 1;
+
+                @SuppressLint("Range") String dayValue = cursor.getString(cursor.getColumnIndex("day"));
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", id);
+                jsonObject.put("title", title);
+                jsonObject.put("desc", description);
+                jsonObject.put("contentURL", contentURL);
+                jsonObject.put("status", status);
+
+                // Create a JSONArray for days
+                JSONArray daysArray = new JSONArray();
+                String[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+                for (String day : daysOfWeek) {
+                    if (dayValue.equals(day)) {
+                        daysArray.put(1);
+                    } else {
+                        daysArray.put(0);
+                    }
+                }
+                jsonObject.put("days", daysArray);
+
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+// Convert the JSONArray to a JSON string
+        String jsonString = jsonArray.toString();
+
+        Log.d("export",jsonString);
+        return jsonString;
     }
 }
