@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,10 +25,16 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.Abs
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.time.LocalDate;
+
 public class VideoPlayerActivity extends AppCompatActivity {
 
-    @Override
 
+    String videoId;
+    float savedSeekTo=0f;
+    YouTubePlayerTracker tracker = new YouTubePlayerTracker();
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
@@ -40,15 +47,26 @@ public class VideoPlayerActivity extends AppCompatActivity {
         YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
         String finalId = id;
+
+        SharedPreferences sharedPreferences=getSharedPreferences("videoId",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = finalId;
+                 videoId = finalId;
 //                youTubePlayer.setPlaybackRate(2);
                 youTubePlayer.setPlaybackRate(PlayerConstants.PlaybackRate.RATE_2);
-
+//                youTubePlayer.seekTo(savedSeekTo);
 //                youTubePlayer.pause(); //     laggy but works to stop auto play
-                youTubePlayer.cueVideo(videoId, 0);
+                savedSeekTo=sharedPreferences.getFloat(videoId,0f);
+                Log.d("youtube2", String.valueOf(savedSeekTo));
+                youTubePlayer.cueVideo(videoId, savedSeekTo);
+
+                youTubePlayer.addListener(tracker);
+                tracker.getState();
+                tracker.getCurrentSecond();
+                tracker.getVideoDuration();
+                tracker.getVideoId();
             }
         });
 
@@ -62,6 +80,17 @@ public class VideoPlayerActivity extends AppCompatActivity {
 //        player.prepare();
 //        player.play();
         ////////////////////////exoplayer end////////////////////////////
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences sharedPreferences=getSharedPreferences("videoId",MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        Log.d("youtube", String.valueOf(tracker.getCurrentSecond()));
+        editor.putFloat(videoId,tracker.getCurrentSecond());
+        editor.apply();
     }
 
     @Override

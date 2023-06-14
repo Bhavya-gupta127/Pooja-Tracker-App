@@ -62,5 +62,38 @@
       0,
       1
     ]
+  },
+  {
+    "id": 100,
+    "title": "export try",
+    "desc": "monday",
+    "contentURL": "https://www.youtube.com/watch?v=gXWXKjR-qII ",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 100,
+    "title": "export try",
+    "desc": "sunday",
+    "contentURL": "https://www.youtube.com/watch?v=gXWXKjR-qII ",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
   }
+
 ]

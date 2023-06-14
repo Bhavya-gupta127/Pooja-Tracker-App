@@ -141,6 +141,8 @@
         android:layout_height="80dp"
         android:textSize="15sp"
         android:text="add"
+        android:textColor="@color/black"
+
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
