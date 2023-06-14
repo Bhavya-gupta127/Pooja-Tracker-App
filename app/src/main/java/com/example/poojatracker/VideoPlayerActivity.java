@@ -54,21 +54,23 @@ public class VideoPlayerActivity extends AppCompatActivity {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                  videoId = finalId;
-//                youTubePlayer.setPlaybackRate(2);
                 youTubePlayer.setPlaybackRate(PlayerConstants.PlaybackRate.RATE_2);
-//                youTubePlayer.seekTo(savedSeekTo);
-//                youTubePlayer.pause(); //     laggy but works to stop auto play
                 savedSeekTo=sharedPreferences.getFloat(videoId,0f);
                 Log.d("youtube2", String.valueOf(savedSeekTo));
-                youTubePlayer.cueVideo(videoId, savedSeekTo);
-
+                youTubePlayer.loadVideo(videoId, savedSeekTo);
+//                youTubePlayer.cueVideo(videoId, savedSeekTo);
                 youTubePlayer.addListener(tracker);
+
                 tracker.getState();
                 tracker.getCurrentSecond();
                 tracker.getVideoDuration();
                 tracker.getVideoId();
+                Log.d("bhavya1", String.valueOf(tracker.getVideoDuration()));
+
             }
         });
+        Log.d("bhavya2", String.valueOf(tracker.getVideoDuration()));
+
 
         ///////////////////////// exoplayer start /////////////////////
 
@@ -91,6 +93,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         Log.d("youtube", String.valueOf(tracker.getCurrentSecond()));
         editor.putFloat(videoId,tracker.getCurrentSecond());
         editor.apply();
+
     }
 
     @Override

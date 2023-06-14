@@ -129,8 +129,8 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submitJSON"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="49dp"
         android:background="@drawable/gradientbtn"
         android:text="ADD"
         app:layout_constraintBottom_toBottomOf="@+id/addJsonUrl"
@@ -217,10 +217,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Add Link to existing Playlist"
-        android:textSize="20sp"
+        android:text="Add Link to existing Playlist or Export your playlist"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/addJsonUrl"
-        app:layout_constraintEnd_toEndOf="@+id/submitJSON"
+        app:layout_constraintEnd_toEndOf="@+id/exportJSON"
         app:layout_constraintStart_toStartOf="@+id/addJsonUrl" />
 
     <TextView
