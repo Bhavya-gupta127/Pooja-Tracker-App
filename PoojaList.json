@@ -1,73 +1,137 @@
 [
   {
     "id": 1,
-    "title": "First title",
-    "desc": "this is first video i added",
-    "contentURL": "https://www.youtube.com/watch?v=gXWXKjR-qII ",
+    "title": "Shani Chalisa",
+    "desc": "शनि चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=4bbwANHNlEQ",
     "status": false,
     "days": [
       1,
-      0,
-      0,
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
+      1,
+      1,
       1
     ]
   },
   {
     "id": 2,
-    "title": "Second title",
-    "desc": "this is 2nd video i added",
-    "contentURL": "https://www.youtube.com/watch?v=x7g8qmE8Jg0 ",
+    "title": "Aditya Hrudayam",
+    "desc": "आदित्य हृदय स्तोत्र",
+    "contentURL": "https://www.youtube.com/watch?v=Clc7w9CeLXs",
     "status": false,
     "days": [
-      0,
       1,
-      0,
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
+      1,
+      1,
       1
     ]
   },
   {
     "id": 3,
-    "title": "3rd",
-    "desc": "this is 2nd video i added",
-    "contentURL": "https://www.youtube.com/watch?v=x7g8qmE8Jg0 ",
+    "title": "Durga Kavach ",
+    "desc": "| श्री दुर्गा रक्षा कवच |",
+    "contentURL": "https://www.youtube.com/watch?v=0rjuR_iiUMg",
     "status": false,
     "days": [
       1,
       1,
-      0,
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
+      1,
       1
     ]
   },
   {
     "id": 4,
-    "title": "4th title",
-    "desc": "this is 2nd video i added",
-    "contentURL": "https://www.youtube.com/watch?v=x7g8qmE8Jg0 ",
+    "title": "Navgraha Chalisa",
+    "desc": "श्री नवग्रह चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=U2T_vlGhGf8",
     "status": false,
     "days": [
-      0,
       1,
-      0,
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
+      1,
+      1,
       1
     ]
   },
   {
-    "id": 100,
-    "title": "export try",
-    "desc": "monday",
-    "contentURL": "https://www.youtube.com/watch?v=gXWXKjR-qII ",
+    "id": 5,
+    "title": "108 Names Of Shani Dev",
+    "desc": "शनि देव के 108 नाम",
+    "contentURL": "https://www.youtube.com/watch?v=bGK0ERLDEHg",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 6,
+    "title": " Mangal Navgrah Stotra",
+    "desc": "मंगल स्तोत्र",
+    "contentURL": "https://www.youtube.com/watch?v=0EZnB_FdC8c",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Khatu Shyam Chalisa",
+    "desc": "खाटू श्याम चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=KsT-FU4YoEk",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Hanuman Chalisa Super Fast",
+    "desc": " श्री हनुमान चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=xJ3vatsNQDU",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Kartikeya stotra",
+    "desc": "श्री कार्तिकेय स्तोत्र",
+    "contentURL": "https://www.youtube.com/watch?v=5ZUkVi4JF3Y",
     "status": false,
     "days": [
       1,
@@ -80,20 +144,195 @@
     ]
   },
   {
-    "id": 100,
-    "title": "export try",
-    "desc": "sunday",
-    "contentURL": "https://www.youtube.com/watch?v=gXWXKjR-qII ",
+    "id": 9,
+    "title": "Ganesh ji Ki Aarti",
+    "desc": "Jai Ganesh Deva",
+    "contentURL": "https://www.youtube.com/watch?v=rLy0EtZCKpI",
     "status": false,
     "days": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
       1
     ]
+  },
+  {
+    "id": 10,
+    "title": "Naina Devi Chalisa",
+    "desc": "नेना देवी चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=_4kzu5DqDmk",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Shani Beej Mantra 108 Times ",
+    "desc": "शनि बीज मंत्र",
+    "contentURL": "https://www.youtube.com/watch?v=XqyPIVgJ5xQ",
+    "status": false,
+    "days": [
+      1,
+      1,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "id": 12,
+    "title": " Mangal Navgrah Stotra",
+    "desc": "मंगल स्तोत्र",
+    "contentURL": "https://www.youtube.com/watch?v=0EZnB_FdC8c",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Shiv Chalisa Super",
+    "desc": "शिव चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=okJeyokGR8k",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Parvati Chalisa",
+    "desc": " माँ पार्वती चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=XH-tTI2pCHE",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }, 
+  {
+    "id": 16,
+    "title": "Bhairav Chalisa ",
+    "desc": "श्री भैरव चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=vRoXSPl_xCQ",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Mata Vindheshwari Chalisa",
+    "desc": " माँ विन्ध्येश्वरी चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=p4jvHQz-fYQ",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 18,
+    "title": " Nilanjan Shani Mantra Samabhasam",
+    "desc": "नीलांजनसमाभासं रविपुत्रं यमाग्रजम्‌। छायामार्तण्ड सम्भूतं तं नमामि शनैश्चरम्‌।",
+    "contentURL": "https://www.youtube.com/watch?v=PDfzKUqGyFk",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Om Namah Shivay 108 times ",
+    "desc": "ॐ नमः शिवाय",
+    "contentURL": "https://www.youtube.com/watch?v=c2UAWr5HuPU",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Mahamrityunjaya Mantra 108 ",
+    "desc": "महामृत्युंजय मंत्र 108 times",
+    "contentURL": "https://www.youtube.com/watch?v=XXRcHfrL7SQ",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Shiv Ji Aarti",
+    "desc": "सुपर-फास्ट ॐ जय शिव ओंकारा आरती",
+    "contentURL": "https://www.youtube.com/watch?v=mE8ARSvi2m0",
+    "status": false,
+    "days": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
   }
-
 ]
