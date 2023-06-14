@@ -197,7 +197,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 //                }
 //            }
 //            String finalVideoId = videoId;
-//            String apiurl="https://www.googleapis.com/youtube/v3/videos?id="+videoId+"&part=contentDetails&key=AIzaSyDnRaAu8XSbnU_vq0sb-cBaxxzBu08_5UM";
+//            String apiurl="https://www.googleapis.com/youtube/v3/videos?id="+videoId+"&part=contentDetails&key={your_key_here}";
 //            try {
 
 //                playvid(context,finalVideoId);
