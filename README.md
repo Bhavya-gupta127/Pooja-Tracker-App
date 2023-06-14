@@ -1,12 +1,10 @@
 # Pooja-Tracker-App
 This app aims to provide a convenient and organized way for individuals to plan and manage their pooja rituals. By integrating YouTube video links and offering tracking features, the app assists users in staying focused and ensuring they complete their pooja rituals according to their schedules without missing out any video/ritual.
 
-<p align="center">
   <img src="readme_assests/light1.jpg"/ width="20%">
   <img src="readme_assests/light2.jpg"/  width="20%>
   <img src="readme_assests/light3.jpg"/  width="20%>
   <img src="readme_assests/light4.jpg"/  width="20%>
-</p>
 
 Key Features:
 
