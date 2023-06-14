@@ -6,16 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,6 +25,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     RecyclerView recyclerView;
     RecyclerPoojaAdapter adapter;
     String day;
+    @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView Details;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +53,8 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
 
         //setting day name
         TextView dayName=(TextView) findViewById(R.id.day);
+        Details=(TextView) findViewById(R.id.details);
+        Details.setText(dbHelper.fetchPoojaDetails(this,day));
         dayName.setText(day);
 
 
@@ -91,6 +91,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     protected void onResume() {
         super.onResume();
         arrPooja=dbHelper.fetchPooja(day);
+        Details.setText(dbHelper.fetchPoojaDetails(this,day));
     }
 
     @Override
@@ -119,6 +120,8 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         arrPooja=dbHelper.fetchPooja(day);
 
         poojaModel.setStatus(!poojaModel.isStatus());
+
+        Details.setText(dbHelper.fetchPoojaDetails(this,day));
     }
 
 
