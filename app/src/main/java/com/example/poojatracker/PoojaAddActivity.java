@@ -104,8 +104,9 @@ public class PoojaAddActivity extends AppCompatActivity {
         exportJson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String timestamp = Long.toString(System.currentTimeMillis());
                 String jsonString = dbHelper.exportToJson();
-                String filename = "output1.json"; // Specify the filename for the output file
+                String filename = "output"+timestamp+".json"; // Specify the filename for the output file
 
                 try {
                     // Create a File object with the desired file path and name
@@ -121,7 +122,7 @@ public class PoojaAddActivity extends AppCompatActivity {
 
                     // Close the FileWriter
                     fileWriter.close();
-
+                    Toast.makeText(PoojaAddActivity.this, "Exported! Please Check your downloads folder", Toast.LENGTH_SHORT).show();
                     // File export successful
                     // You can now access the file using its path: file.getAbsolutePath()
                 } catch (IOException e) {
