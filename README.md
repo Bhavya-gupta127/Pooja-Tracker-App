@@ -1,11 +1,12 @@
 # Pooja-Tracker-App
 This app aims to provide a convenient and organized way for individuals to plan and manage their pooja rituals. By integrating YouTube video links and offering tracking features, the app assists users in staying focused and ensuring they complete their pooja rituals according to their schedules without missing out any video/ritual.
-
+<p>
   <img src="readme_assests/light1.jpg"/ width="20%">
   <img src="readme_assests/light2.jpg"/  width="20%>
   <img src="readme_assests/light3.jpg"/  width="20%>
   <img src="readme_assests/light4.jpg"/  width="20%>
-
+  
+</p>
 Key Features:
 
 Pooja Schedule Creation: Users can create their personalized pooja schedules by adding the details of each day, such as the day of the week and the specific rituals to be performed.
@@ -21,3 +22,7 @@ Watched Video Tracking: The Pooja Schedule Manager keeps track of the videos tha
 User-Friendly Interface: The app features a user-friendly interface with intuitive navigation and clear visual cues, making it easy for users to manage their pooja schedules and track their progress.
 
 The Pooja Schedule Manager aims to provide a convenient and organized way for individuals to plan and manage their pooja rituals. By integrating YouTube video links and offering tracking features, the app assists users in staying focused and ensuring they complete their pooja rituals according to their schedules.
+
+## Screenshots
+
+![App Screenshot](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/blob/master/readme_assests/light1.jpg)
