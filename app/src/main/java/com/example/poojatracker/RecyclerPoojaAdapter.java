@@ -68,6 +68,7 @@ public class RecyclerPoojaAdapter extends RecyclerView.Adapter<RecyclerPoojaAdap
             public void onClick(View v) {
                 listener.onItemClicked(arrPooja.get(position));
             }
+
         });
         holder.status.setOnClickListener(new View.OnClickListener() {
             @Override

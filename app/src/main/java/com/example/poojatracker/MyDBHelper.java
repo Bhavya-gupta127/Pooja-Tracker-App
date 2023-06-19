@@ -1,7 +1,6 @@
 package com.example.poojatracker;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,22 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.utils.YouTubePlayerTracker;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -309,5 +298,37 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
         Log.d("export", jsonString);
         return jsonString;
+    }
+
+    public void deleteFromDb(int id, String day) {
+        SQLiteDatabase db = this.getWritableDatabase();
+//        db.delete(TABLE_POOJA, "id = ?", new String[] { String.valueOf(id)});
+        db.delete(TABLE_DAY, "id = ? AND day = ?", new String[] { String.valueOf(id),day });
+        db.close();
+    }
+
+    public int getFirstUnchecked(String day) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT "
+                        + TABLE_POOJA + "." + KEY_ID + " , "
+                        + TABLE_POOJA + "." + KEY_TITLE + " , "
+                        + TABLE_POOJA + "." + KEY_DESC + " , "
+                        + TABLE_POOJA + "." + KEY_URL + " , "
+                        + TABLE_POOJA + "." + KEY_STATUS
+                        + " FROM "
+                        + TABLE_POOJA
+                        + " JOIN " + TABLE_DAY
+                        + " ON " + TABLE_POOJA + "." + KEY_ID + " = " + TABLE_DAY + "." + KEY_ID
+                        + " WHERE " + TABLE_DAY + "." + KEY_DAY + " = " + "'" + day + "'" + " ;"
+                , null
+        );
+        int count=0;
+        while (cursor.moveToNext()) {
+            if(cursor.getInt(4)==0)
+                return count;
+            count++;
+        }
+        return count;
     }
 }
