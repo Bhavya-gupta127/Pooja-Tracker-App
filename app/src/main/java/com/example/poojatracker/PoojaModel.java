@@ -29,6 +29,11 @@ public class PoojaModel {
                 break;
             }
         }
+        if(VideoId.equals("gXWXKjR-qII"))
+        {
+            if(url.length()>=11)
+                VideoId=url.substring(url.length()-11,url.length());
+        }
         return VideoId;
     }
     public PoojaModel(int id,String title,String desc,String contentURL,boolean status)

@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     RecyclerView recyclerView;
     RecyclerPoojaAdapter adapter;
     String day;
+    int scrollTo=0;
     @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView Details;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
             if(!prevDate.equals(String.valueOf(LocalDate.now())))
             {
                 editor.putString("date",String.valueOf(LocalDate.now()));
+                editor.apply();
                 dbHelper.updateDbForNewDay();
             }
         }
@@ -79,8 +82,9 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                     //update arrPooja and db
                     dbHelper.updateDbForStatus(currentPooja.getId(),true);
                     currentPooja.setStatus(true);
-                    arrPooja=dbHelper.fetchPooja(day);
-                    recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
+                    scrollTo=dbHelper.getFirstUnchecked(day);
+                    recyclerView.smoothScrollToPosition(scrollTo);
+                    updatelist();
                 }
             }
         });
@@ -90,7 +94,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
     @Override
     protected void onResume() {
         super.onResume();
-        arrPooja=dbHelper.fetchPooja(day);
+        updatelist();
         Details.setText(dbHelper.fetchPoojaDetails(this,day));
     }
 
@@ -105,10 +109,30 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
                         currentPooja=poojaModel;
                         launcher.launch(poojaModel.getVideoId());
                     }
+                }) .setNegativeButton("Delete Video", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            dbHelper.deleteFromDb(poojaModel.getId(),day);
+                            updatelist();
+                            Toast.makeText(PoojaListActivity.this, "Deleted days ", Toast.LENGTH_SHORT).show();
+                        }
+                        catch (Exception e)
+                        {
+                            Toast.makeText(PoojaListActivity.this, "Error While deleting", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    }
                 })
                 .setNeutralButton("No, Go Back",null)
                 .setIcon(R.drawable.omicon)
                 .show();
+    }
+
+    private void updatelist() {
+        arrPooja=dbHelper.fetchPooja(day);
+        recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
+
     }
 
     @Override
@@ -122,6 +146,7 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         poojaModel.setStatus(!poojaModel.isStatus());
 
         Details.setText(dbHelper.fetchPoojaDetails(this,day));
+
     }
 
 

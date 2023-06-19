@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="@string/btn_ems"
-        android:text="Thurday"
+        android:text="Thursday"
 
         app:layout_constraintBottom_toTopOf="@+id/friday"
         app:layout_constraintEnd_toEndOf="@+id/wednesday"

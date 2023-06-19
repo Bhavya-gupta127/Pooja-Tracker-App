@@ -80,22 +80,6 @@
     ]
   },
   {
-    "id": 6,
-    "title": " Mangal Navgrah Stotra",
-    "desc": "मंगल स्तोत्र",
-    "contentURL": "https://www.youtube.com/watch?v=0EZnB_FdC8c",
-    "status": false,
-    "days": [
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
-    ]
-  },
-  {
     "id": 7,
     "title": "Khatu Shyam Chalisa",
     "desc": "खाटू श्याम चालीसा",
@@ -111,22 +95,7 @@
       1
     ]
   },
-  {
-    "id": 8,
-    "title": "Hanuman Chalisa Super Fast",
-    "desc": " श्री हनुमान चालीसा",
-    "contentURL": "https://www.youtube.com/watch?v=xJ3vatsNQDU",
-    "status": false,
-    "days": [
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
-    ]
-  },
+
   {
     "id": 15,
     "title": "Kartikeya stotra",
@@ -148,22 +117,6 @@
     "title": "Ganesh ji Ki Aarti",
     "desc": "Jai Ganesh Deva",
     "contentURL": "https://www.youtube.com/watch?v=rLy0EtZCKpI",
-    "status": false,
-    "days": [
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
-    ]
-  },
-  {
-    "id": 10,
-    "title": "Naina Devi Chalisa",
-    "desc": "नेना देवी चालीसा",
-    "contentURL": "https://www.youtube.com/watch?v=_4kzu5DqDmk",
     "status": false,
     "days": [
       1,
@@ -198,13 +151,13 @@
     "contentURL": "https://www.youtube.com/watch?v=0EZnB_FdC8c",
     "status": false,
     "days": [
+      0,
       1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1
+      0,
+      0,
+      0,
+      0,
+      0
     ]
   },
   {
@@ -240,33 +193,17 @@
     ]
   }, 
   {
-    "id": 16,
-    "title": "Bhairav Chalisa ",
-    "desc": "श्री भैरव चालीसा",
-    "contentURL": "https://www.youtube.com/watch?v=vRoXSPl_xCQ",
-    "status": false,
-    "days": [
-      1,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-    ]
-  },
-  {
     "id": 17,
     "title": "Mata Vindheshwari Chalisa",
     "desc": " माँ विन्ध्येश्वरी चालीसा",
     "contentURL": "https://www.youtube.com/watch?v=p4jvHQz-fYQ",
     "status": false,
     "days": [
+      0,
+      0,
+      0,
+      0,
       1,
-      0,
-      0,
-      0,
-      0,
       0,
       0
     ]
@@ -333,6 +270,678 @@
       0,
       0,
       0
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Sampurn SunderKand",
+    "desc": " सम्पूर्ण सुन्दरकाण्ड पाठ",
+    "contentURL": "https://www.youtube.com/watch?v=JaC2crfwXK8",
+    "status": false,
+    "days": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Hanuman Chalisa Super Fast",
+    "desc": " श्री हनुमान चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=xJ3vatsNQDU",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Bajrang Baan",
+    "desc": " बजरंग बाण",
+    "contentURL": "https://www.youtube.com/watch?v=Fahq3LYQq88",
+    "status": false,
+    "days": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 25,
+    "title": " Hanuman Ashtak",
+    "desc": " हनुमान अष्टक",
+    "contentURL": "https://www.youtube.com/watch?v=wVpIkZIt9Po",
+    "status": false,
+    "days": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 26,
+    "title": "Hanuman Ji Ki Aarti ",
+    "desc": " हनुमान जी की आरती",
+    "contentURL": "https://www.youtube.com/watch?v=Fu_xs_zm9Ng",
+    "status": false,
+    "days": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 27,
+    "title": "Mangal Beej Mantra ",
+    "desc": " ",
+    "contentURL": "https://www.youtube.com/watch?v=7gkFCDSHg7k",
+    "status": false,
+    "days": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 28,
+    "title": "Chamunda Chalisa",
+    "desc": " ",
+    "contentURL": "https://www.youtube.com/watch?v=eCIZZ1C9RNg",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 29,
+    "title": "Naina Devi Chalisa",
+    "desc": "  नेना देवी चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=_4kzu5DqDmk",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 30,
+    "title": " Baglamukhi Chalisa ",
+    "desc": "  बगलामुखी चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=aOPf_UBJLNw",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 31,
+    "title": "Saraswati Chalisa ",
+    "desc": "  सरस्वती चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=JCBUHY_LSQ4",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 32,
+    "title": "Ram Chalisa",
+    "desc": " राम चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=Zs0gfT1MwEk",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 33,
+    "title": "Sita Chalisa",
+    "desc": " श्री सीता चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=Fy5GM2XEXXM",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 34,
+    "title": "Aarti Shree Ram Ji Ki",
+    "desc": " ",
+    "contentURL": "https://www.youtube.com/watch?v=J5cllhBiAV0",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 35,
+    "title": "Krishna Chalisa",
+    "desc": "कृष्ण चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=de4XdyZs2xo",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 36,
+    "title": "Shri Radha Chalisa ",
+    "desc": "श्री राधा चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=8TtpRz-Cyu8",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 37,
+    "title": "Parvati Chalisa",
+    "desc": "माँ पार्वती चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=XH-tTI2pCHE",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 37,
+    "title": "Riddhi Siddhi Ke Data Mere Ganpati",
+    "desc": "रिद्धि सिद्धि के दाता मेरे गणपति",
+    "contentURL": "https://www.youtube.com/watch?v=iMKL2XMF5Ao",
+    "status": false,
+    "days": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 38,
+    "title": "Vishnu Chalisa ",
+    "desc": "श्री विष्णु चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=3FI0kHJnn8s",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 39,
+    "title": "Laxmi Chalisa",
+    "desc": " लक्ष्मी चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=qQqNtvJPoEw",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 40,
+    "title": "Vishnu Sahasranamam",
+    "desc": "विष्णु सहस्रनाम",
+    "contentURL": "https://www.youtube.com/watch?v=uC-w9tBXGMk",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 41,
+    "title": "Om Jai Jagadish Hare",
+    "desc": "ॐ जय जगदीश हरे आरती",
+    "contentURL": "https://www.youtube.com/watch?v=5416xdpiGJg",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 42,
+    "title": "Sai Chalisa ",
+    "desc": " BULALE SAI SHIRDI DHAAM",
+    "contentURL": "https://www.youtube.com/watch?v=mRDy5jHFMq4",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 43,
+    "title": "Sai Bhajan ",
+    "desc": " साई तेरे ही भरोसे",
+    "contentURL": "https://www.youtube.com/watch?v=5ZsNZ1Ez7-Q",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 43,
+    "title": "Aarti Sai baba ",
+    "desc": " साईबाबा आरती ",
+    "contentURL": "https://www.youtube.com/watch?v=DT5PaaxItzY",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 44,
+    "title": "Maa Annapurna Chalisa",
+    "desc": " माँ अन्नपूर्णा चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=vn2f6lWmohI",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 45,
+    "title": "Durga Chalisa",
+    "desc": " दुर्गा चालीसा ",
+    "contentURL": "https://www.youtube.com/watch?v=HuF-A0GqAMA",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 46,
+    "title": "Om Dum Durgaye Namaha",
+    "desc": " ॐ दुं दुर्गायै नमः ",
+    "contentURL": "https://www.youtube.com/watch?v=jB4aaP2X7S4",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 47,
+    "title": " Jai Ambe Gauri Durga Aarti",
+    "desc": "  ॐ जय अम्बे गौरी दुर्गा  ",
+    "contentURL": "https://www.youtube.com/watch?v=9A0GwNw0Zno",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 48,
+    "title": "  Vaishno Devi Chalisa ",
+    "desc": "  श्री वैष्णो देवी चालीसा  ",
+    "contentURL": "https://www.youtube.com/watch?v=2eKwoDxaqdI",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 49,
+    "title": "Kuber Chalisa ",
+    "desc": " कुबेर चालीसा",
+    "contentURL": "https://www.youtube.com/watch?v=auyzyuKCpL0",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 50,
+    "title": "Om Shreem Shriye Namaha",
+    "desc": " 108 Times ",
+    "contentURL": "https://www.youtube.com/watch?v=9xaK7WUkPfU",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 51,
+    "title": "Om Jai Lakshmi Mata",
+    "desc": "  लक्ष्मी माता आरती ",
+    "contentURL": "https://www.youtube.com/watch?v=0D3VbBoJBrM",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 52,
+    "title": "Mahakali Chalisa",
+    "desc": " ",
+    "contentURL": "https://www.youtube.com/watch?v=G4vxc1GuqW4",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ]
+  },
+  {
+    "id": 53,
+    "title": "Dashrath Krit Shani Stotra",
+    "desc": "दशरथ कृत शनि स्त्रोत ",
+    "contentURL": "https://www.youtube.com/watch?v=zd2BxhIpuds",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "id": 54,
+    "title": "Om Sham Shanicharaya Namah",
+    "desc": " 108 Times ",
+    "contentURL": "https://www.youtube.com/watch?v=kB0dFMBE7-g",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "id": 55,
+    "title": "Om Praam Preem Prom Sah Shanaicharay Namah",
+    "desc": "शनि मंत्र",
+    "contentURL": "https://www.youtube.com/watch?v=xi6lmFf8UZk",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "id": 56,
+    "title": "Shani Dev Aarti",
+    "desc": "शनिदेव आरती",
+    "contentURL": "https://www.youtube.com/watch?v=42fouuhg9Pw",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ]
+  },
+  {
+    "id": 57,
+    "title": "Surya Chalisa ",
+    "desc": "",
+    "contentURL": "https://www.youtube.com/watch?v=IEfp2ZOphlM",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  {
+    "id": 58,
+    "title": "Surya ashtakam ",
+    "desc": "सूर्य अष्टक",
+    "contentURL": "https://www.youtube.com/watch?v=BPMgPs_R9J4",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  {
+    "id": 59,
+    "title": "Surya Mantra",
+    "desc": "om grihini suryaya namah ",
+    "contentURL": "https://www.youtube.com/watch?v=QwpldbSh8dA",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  {
+    "id": 60,
+    "title": "Surya Dev Ki Aarti",
+    "desc": "सूर्य देव की आरती ",
+    "contentURL": "https://www.youtube.com/watch?v=iL_6nb3H1kc",
+    "status": false,
+    "days": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  {
+    "id": 61,
+    "title": "Aao Kanha Bhog Lagao",
+    "desc": "आओ कान्हा भोग लगाओ  ",
+    "contentURL": "https://www.youtube.com/watch?v=_cv7mdcGWRg",
+    "status": false,
+    "days": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
     ]
   }
 ]
