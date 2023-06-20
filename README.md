@@ -13,7 +13,11 @@ This app aims to provide a convenient and organized way for individuals to plan 
 
 ### Dark Theme
 <p align="center">
-<img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/dark1.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/dark2.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/dark3.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/dark4.jpg" width="20%"/>
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/0285b865-8fdd-47ad-af81-41669c2dfeae" width="20%"/>
+![dark3](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/2f208b9d-63a8-441c-92ea-362a2235b5b7)
+![dark2](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/713c7f25-6c77-4ed6-8cb6-451e4f795ff9)
+![dark4](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/a8ca1ada-7675-46f1-b96d-305359168f65)
+
 </p>
 
 ## Rough Mind Map
