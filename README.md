@@ -6,27 +6,36 @@ This app aims to provide a convenient and organized way for individuals to plan 
 
 ## Screenshots
 
+
 ### Light Theme
 <p align="center">
-<img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/light1.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/light2.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/light3.jpg" width="20%"/>  <img src="https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/light4.jpg" width="20%"/>
+    <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/4df224c3-a880-46b1-adb7-64623eab476b" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/f976f66f-7eae-4fab-b50a-d40f7e33c23d" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/2f9f3d03-b891-4f6e-8662-f3b06e3a8b3d" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/4bc3aa9b-5dbe-4d02-9ff8-98b965fed957" width="20%"/>
 </p>
 
 ### Dark Theme
-<p align="center">
-  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/0285b865-8fdd-47ad-af81-41669c2dfeae" width="20%"/>
-![dark3](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/2f208b9d-63a8-441c-92ea-362a2235b5b7)
-![dark2](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/713c7f25-6c77-4ed6-8cb6-451e4f795ff9)
-![dark4](https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/a8ca1ada-7675-46f1-b96d-305359168f65)
 
+<p align="center">
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/fd5a7930-004d-404b-babd-89308d442089" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/713c7f25-6c77-4ed6-8cb6-451e4f795ff9" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/2f208b9d-63a8-441c-92ea-362a2235b5b7" width="20%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/a8ca1ada-7675-46f1-b96d-305359168f65" width="20%"/>
 </p>
 
-## Rough Mind Map
-
-![Mind Map](https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/mind_map.jpeg)
-
-## Rough ER Diagram
-
-![ER Diagram](https://raw.githubusercontent.com/Bhavya-gupta127/Pooja-Tracker-App/master/readme_assests/Rough_ER_Diagram.jpeg)
+## Rough Mind Map & ER Diagram
+  <div>
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/e2a66e78-5ccd-4d39-97c2-339d2c921ce7" width="40%"/>
+  
+  <img src="https://github.com/Bhavya-gupta127/Pooja-Tracker-App/assets/77940309/7ee3b29d-0d52-4ded-9460-a6bf640b82cd" width="40%" />
+  </div>
 
 ## Key Features
 
