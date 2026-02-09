@@ -37,19 +37,32 @@ public class PoojaListActivity extends AppCompatActivity implements SelectListen
         //connecting sqlite database
         dbHelper = new MyDBHelper(this);
 
+//        //resetting everyday
+//        SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
+//        SharedPreferences.Editor editor=sharedPreferences.edit();
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
+//            if(!prevDate.equals(String.valueOf(LocalDate.now())))
+//            {
+//                editor.putString("date",String.valueOf(LocalDate.now()));
+//                editor.apply();
+//                dbHelper.updateDbForNewDay();
+//            }
+//        }
         //resetting everyday
         SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
-            if(!prevDate.equals(String.valueOf(LocalDate.now())))
+            String currentDate = String.valueOf(LocalDate.now());
+            String prevDate = sharedPreferences.getString("date", null); // Use null as default
+
+            if(!currentDate.equals(prevDate))
             {
-                editor.putString("date",String.valueOf(LocalDate.now()));
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString("date",currentDate);
                 editor.apply();
                 dbHelper.updateDbForNewDay();
             }
         }
-
         //getting day name from prev activity
         Intent intent = getIntent();
         day = intent.getStringExtra("day");
