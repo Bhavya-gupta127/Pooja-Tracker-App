@@ -7,18 +7,38 @@ android {
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.example.poojatracker"
+        applicationId "com.bhavya.poojatracker"
         minSdk 23
         targetSdk 34
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    def persistentKeystore = rootProject.file('../poojatracker-signing.jks')
+    signingConfigs {
+        persistent {
+            if (persistentKeystore.exists()) {
+                storeFile persistentKeystore
+                storePassword "poojatracker2026"
+                keyAlias "poojatracker"
+                keyPassword "poojatracker2026"
+            }
+        }
+    }
+
     buildTypes {
+        debug {
+            if (persistentKeystore.exists()) {
+                signingConfig signingConfigs.persistent
+            }
+        }
         release {
             minifyEnabled false
+            if (persistentKeystore.exists()) {
+                signingConfig signingConfigs.persistent
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

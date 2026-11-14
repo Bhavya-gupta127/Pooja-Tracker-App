@@ -101,6 +101,49 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.delete(TABLE_DAY, KEY_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
+    public int importFromSqliteFile(java.io.File externalDbFile) {
+        int imported = 0;
+        try (SQLiteDatabase extDb = SQLiteDatabase.openDatabase(
+                externalDbFile.getAbsolutePath(),
+                null,
+                SQLiteDatabase.OPEN_READONLY
+        )) {
+            java.util.Set<Integer> validIdsWithDays = new java.util.HashSet<>();
+            try (Cursor dayCursor = extDb.rawQuery("SELECT id, day FROM " + TABLE_DAY, null)) {
+                while (dayCursor.moveToNext()) {
+                    int id = dayCursor.getInt(0);
+                    String day = dayCursor.isNull(1) ? null : dayCursor.getString(1);
+                    if (day != null && !day.trim().isEmpty()) {
+                        if (validIdsWithDays.add(id)) {
+                            clearDaysForPooja(id);
+                        }
+                        addDay(id, day.trim());
+                    }
+                }
+            }
+            try (Cursor poojaCursor = extDb.rawQuery(
+                    "SELECT id, title, description, contentUrl, status FROM " + TABLE_POOJA,
+                    null
+            )) {
+                while (poojaCursor.moveToNext()) {
+                    int id = poojaCursor.getInt(0);
+                    if (!validIdsWithDays.contains(id)) {
+                        continue;
+                    }
+                    String title = poojaCursor.isNull(1) ? "" : poojaCursor.getString(1);
+                    String desc = poojaCursor.isNull(2) ? "" : poojaCursor.getString(2);
+                    String url = poojaCursor.isNull(3) ? "" : poojaCursor.getString(3);
+                    boolean status = poojaCursor.getInt(4) == 1;
+                    if (!title.trim().isEmpty() && !url.trim().isEmpty()) {
+                        addPooja(id, title.trim(), desc.trim(), url.trim(), status);
+                        imported++;
+                    }
+                }
+            }
+        }
+        return imported;
+    }
+
     //    SELECT p.id , p.title , p.description, p.contentUrl, p.status, d.day
 //    FROM poojas p
 //    JOIN days d ON p.id=d.id

@@ -252,6 +252,7 @@ public class PoojaAddActivity extends AppCompatActivity {
         }
         int importedCount = 0;
         Random random = new Random();
+        java.util.Set<Integer> seenIdsInBatch = new java.util.HashSet<>();
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject object = response.getJSONObject(i);
@@ -266,8 +267,13 @@ public class PoojaAddActivity extends AppCompatActivity {
                     continue;
                 }
 
-                dbHelper.addPooja(id, title, desc, contentUrl, status);
-                dbHelper.clearDaysForPooja(id);
+                // Legacy 2023 exports emitted multiple objects with the same id (one per day).
+                // Clear existing days only on the first occurrence of an id in this batch so all days merge cleanly!
+                if (seenIdsInBatch.add(id)) {
+                    dbHelper.addPooja(id, title, desc, contentUrl, status);
+                    dbHelper.clearDaysForPooja(id);
+                    importedCount++;
+                }
                 if (days != null) {
                     int limit = Math.min(days.length(), dayMapping.length);
                     for (int j = 0; j < limit; j++) {
@@ -276,7 +282,6 @@ public class PoojaAddActivity extends AppCompatActivity {
                         }
                     }
                 }
-                importedCount++;
             } catch (JSONException e) {
                 Log.w("PoojaImport", "Skipping malformed JSON entry at index " + i, e);
             }
@@ -285,28 +290,57 @@ public class PoojaAddActivity extends AppCompatActivity {
     }
 
     private void importJsonFromUri(Uri uri) {
+        File tempFile = new File(getCacheDir(), "pooja_import_tmp_" + System.currentTimeMillis());
         try (InputStream inputStream = getContentResolver().openInputStream(uri)) {
             if (inputStream == null) {
                 Toast.makeText(this, "Unable to read selected file", Toast.LENGTH_SHORT).show();
                 return;
             }
-            StringBuilder sb = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append('\n');
+            try (OutputStream out = new FileOutputStream(tempFile)) {
+                byte[] buf = new byte[8192];
+                int read;
+                while ((read = inputStream.read(buf)) != -1) {
+                    out.write(buf, 0, read);
                 }
             }
-            JSONArray jsonArray = new JSONArray(sb.toString());
-            int imported = importPoojaJsonArray(jsonArray);
+
+            // Check if the selected file is a raw SQLite PoojaDB database ("SQLite format 3")
+            byte[] header = new byte[15];
+            int headerLen;
+            try (java.io.FileInputStream fis = new java.io.FileInputStream(tempFile)) {
+                headerLen = fis.read(header);
+            }
+            String magic = headerLen > 0 ? new String(header, 0, headerLen, StandardCharsets.US_ASCII) : "";
+            int imported;
+            if (magic.startsWith("SQLite format 3")) {
+                imported = dbHelper.importFromSqliteFile(tempFile);
+            } else {
+                StringBuilder sb = new StringBuilder();
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(new java.io.FileInputStream(tempFile), StandardCharsets.UTF_8)
+                )) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line).append('\n');
+                    }
+                }
+                JSONArray jsonArray = new JSONArray(sb.toString());
+                imported = importPoojaJsonArray(jsonArray);
+            }
+
             if (imported > 0) {
-                Toast.makeText(this, "Imported " + imported + " Poojas from file!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Imported " + imported + " Poojas successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "No valid Pooja entries found in file", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Log.e("PoojaImport", "Failed to import JSON file", e);
-            Toast.makeText(this, "Invalid JSON file. Please select an exported Pooja JSON file.", Toast.LENGTH_LONG).show();
+            Log.e("PoojaImport", "Failed to import file", e);
+            Toast.makeText(this, "Invalid file. Select an exported Pooja JSON or PoojaDB file.", Toast.LENGTH_LONG).show();
+        } finally {
+            if (tempFile.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                tempFile.delete();
+            }
         }
     }
 
