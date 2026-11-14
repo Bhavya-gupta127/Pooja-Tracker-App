@@ -8,10 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#9C9898</color>
-    <color name="status_bar_color">#FF000000</color>
+    <color name="status_bar_color">#FF1A162B</color>
+
     <color name="add_header_text">#FF1F1B2E</color>
-    <color name="card_surface_bg">#EEFFFFFF</color>
-    <color name="card_surface_stroke">#336B5B95</color>
+    <color name="card_surface_bg">#F0FFFFFF</color>
+    <color name="card_surface_stroke">#306B5B95</color>
+    <color name="today_card_bg">#F7F4EEFF</color>
+    <color name="today_card_stroke">#FF7C5CBF</color>
     <color name="card_text_primary">#FF1F1B2E</color>
     <color name="card_text_secondary">#FF5E5675</color>
     <color name="input_bg">#FFFFFFFF</color>
@@ -24,4 +27,14 @@
     <color name="secondary_btn_bg">#FFF3EEFF</color>
     <color name="secondary_btn_stroke">#FFBBA9EC</color>
     <color name="secondary_btn_text">#FF362463</color>
+
+    <color name="badge_pill_bg">#FFEDE7FA</color>
+    <color name="badge_pill_text">#FF4A3580</color>
+    <color name="badge_today_bg">#FF6A4C93</color>
+    <color name="badge_today_text">#FFFFFFFF</color>
+    <color name="badge_done_bg">#FFE3F8EE</color>
+    <color name="badge_done_text">#FF13794B</color>
+    <color name="progress_track_bg">#FFE5DDF7</color>
+    <color name="progress_fill_color">#FF6A4C93</color>
+    <color name="danger_subtle_text">#FFB43E52</color>
 </resources>

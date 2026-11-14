@@ -65,4 +65,14 @@ public class ExampleUnitTest {
         assertEquals(202, orphan.id);
         assertArrayEquals(new int[]{0, 0, 0, 0, 0, 0, 0}, orphan.days);
     }
+
+    @Test
+    public void deterministicId_isStableAcrossDaysDuringLegacyMigration() {
+        int idMon = MyDBHelper.deterministicId("Ganesh Mantra", "https://www.youtube.com/watch?v=Naruxgq6oMU");
+        int idWed = MyDBHelper.deterministicId("  ganesh mantra ", "https://www.youtube.com/watch?v=Naruxgq6oMU  ");
+        int idOther = MyDBHelper.deterministicId("Hanuman Chalisa", "https://www.youtube.com/watch?v=AETFvQonfV8");
+        assertEquals(idMon, idWed);
+        assertNotEquals(idMon, idOther);
+        assertTrue(idMon >= 100000 && idMon < 1000000);
+    }
 }

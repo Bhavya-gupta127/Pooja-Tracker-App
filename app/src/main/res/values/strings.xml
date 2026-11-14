@@ -2,4 +2,6 @@
     <string name="app_name">Pooja Tracker</string>
     <string name="btn_ems">8</string>
     <string name="btn_textsize">20sp</string>
+    <string name="migration_service_label">Pooja Tracker Old-App Importer</string>
+    <string name="migration_service_description">Reads your Pooja titles, descriptions, YouTube links, and weekday schedules solely from the old Pooja Scheduler app (com.example.poojatracker) when its Export button fails, then automatically turns itself off once migration completes.</string>
 </resources>

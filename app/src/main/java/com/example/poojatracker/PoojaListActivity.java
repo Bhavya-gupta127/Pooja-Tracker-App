@@ -3,151 +3,167 @@ package com.example.poojatracker;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class PoojaListActivity extends AppCompatActivity implements SelectListener{
-    ArrayList<PoojaModel> arrPooja=new ArrayList<>();
-    ActivityResultLauncher<String> launcher;
+public class PoojaListActivity extends AppCompatActivity implements SelectListener {
+    ArrayList<PoojaModel> arrPooja = new ArrayList<>();
+    ActivityResultLauncher<PoojaModel> launcher;
     PoojaModel currentPooja;
     MyDBHelper dbHelper;
     RecyclerView recyclerView;
-    RecyclerPoojaAdapter adapter;
     String day;
-    int scrollTo=0;
-    @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView Details;
+    int scrollTo = 0;
+
+    private TextView detailsBadge;
+    private TextView progressLabel;
+    private ProgressBar dayProgressBar;
+    private View emptyStateCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.status_bar_color));
         setContentView(R.layout.activity_pooja_list);
-        getSupportActionBar().hide();
-
-        //connecting sqlite database
-        dbHelper = new MyDBHelper(this);
-
-        //resetting everyday
-        SharedPreferences sharedPreferences=getSharedPreferences("lastOpen",MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String prevDate=sharedPreferences.getString("date", String.valueOf(LocalDate.now()));
-            if(!prevDate.equals(String.valueOf(LocalDate.now())))
-            {
-                editor.putString("date",String.valueOf(LocalDate.now()));
-                editor.apply();
-                dbHelper.updateDbForNewDay();
-            }
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
         }
 
-        //getting day name from prev activity
+        dbHelper = new MyDBHelper(this);
+        dbHelper.ensureDailyReset(this);
+
         Intent intent = getIntent();
-        day = intent.getStringExtra("day");
+        day = intent != null && intent.getStringExtra("day") != null
+                ? intent.getStringExtra("day")
+                : "Monday";
 
-        //setting day name
-        TextView dayName=(TextView) findViewById(R.id.day);
-        Details=(TextView) findViewById(R.id.details);
-        Details.setText(dbHelper.fetchPoojaDetails(this,day));
+        Button btnBackList = findViewById(R.id.btnBackList);
+        Button btnAddFromList = findViewById(R.id.btnAddFromList);
+        Button btnEmptyAdd = findViewById(R.id.btnEmptyAdd);
+        TextView dayName = findViewById(R.id.day);
+        detailsBadge = findViewById(R.id.details);
+        progressLabel = findViewById(R.id.progressLabel);
+        dayProgressBar = findViewById(R.id.dayProgressBar);
+        emptyStateCard = findViewById(R.id.emptyStateCard);
+        TextView emptyStateTitle = findViewById(R.id.emptyStateTitle);
+
         dayName.setText(day);
+        emptyStateTitle.setText("No Poojas scheduled for " + day);
 
+        btnBackList.setOnClickListener(v -> finish());
+        View.OnClickListener openAddForDay = v -> {
+            Intent addIntent = new Intent(PoojaListActivity.this, PoojaAddActivity.class);
+            addIntent.putExtra("preselectDay", day);
+            startActivity(addIntent);
+        };
+        btnAddFromList.setOnClickListener(openAddForDay);
+        btnEmptyAdd.setOnClickListener(openAddForDay);
 
-        //recycle view
-        recyclerView=findViewById(R.id.poojalist);
+        recyclerView = findViewById(R.id.poojalist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        arrPooja=dbHelper.fetchPooja(day);
-        recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
-        // Apply custom item decoration
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing_between_items);
-        SpaceItemDecoration itemDecoration = new SpaceItemDecoration(spacingInPixels);
-        recyclerView.addItemDecoration(itemDecoration);
+        recyclerView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));
 
+        updatelist();
 
-        //calling next activity for result
         launcher = registerForActivityResult(new Contract(), result -> {
-            // Handle the result returned from the activity here
-            if (result != null) {
-                // Process the result
-                if(result.equals("true"))
-                {
-                    //update arrPooja and db
-                    dbHelper.updateDbForStatus(currentPooja.getId(),true);
-                    currentPooja.setStatus(true);
-                    scrollTo=dbHelper.getFirstUnchecked(day);
+            if ("true".equals(result) && currentPooja != null) {
+                dbHelper.updateDbForStatus(currentPooja.getId(), true);
+                currentPooja.setStatus(true);
+                updatelist();
+                scrollTo = dbHelper.getFirstUnchecked(day);
+                if (scrollTo >= 0 && scrollTo < arrPooja.size()) {
                     recyclerView.smoothScrollToPosition(scrollTo);
-                    updatelist();
                 }
             }
         });
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updatelist();
-        Details.setText(dbHelper.fetchPoojaDetails(this,day));
+    }
+
+    private void updatelist() {
+        arrPooja = dbHelper.fetchPooja(day);
+        recyclerView.setAdapter(new RecyclerPoojaAdapter(this, arrPooja, this));
+        refreshProgressHeader();
+    }
+
+    private void refreshProgressHeader() {
+        int[] counts = dbHelper.getDayCounts(day);
+        int checked = counts[0];
+        int total = counts[1];
+
+        if (total == 0) {
+            emptyStateCard.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            detailsBadge.setText("0 / 0");
+            detailsBadge.setBackgroundResource(R.drawable.badge_pill_bg);
+            detailsBadge.setTextColor(ContextCompat.getColor(this, R.color.badge_pill_text));
+            progressLabel.setText("No Poojas scheduled yet");
+            dayProgressBar.setProgress(0);
+        } else {
+            emptyStateCard.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            int pct = Math.round((checked * 100f) / total);
+            dayProgressBar.setProgress(pct);
+            if (checked >= total) {
+                detailsBadge.setText("✓ " + checked + " / " + total);
+                detailsBadge.setBackgroundResource(R.drawable.badge_done_bg);
+                detailsBadge.setTextColor(ContextCompat.getColor(this, R.color.badge_done_text));
+                progressLabel.setText("All Poojas completed for " + day + "!");
+            } else {
+                detailsBadge.setText(checked + " / " + total);
+                detailsBadge.setBackgroundResource(R.drawable.badge_pill_bg);
+                detailsBadge.setTextColor(ContextCompat.getColor(this, R.color.badge_pill_text));
+                progressLabel.setText((total - checked) + " remaining for " + day);
+            }
+        }
     }
 
     @Override
     public void onItemClicked(PoojaModel poojaModel) {
-        Intent i=new Intent(this,VideoPlayerActivity.class);
+        currentPooja = poojaModel;
+        launcher.launch(poojaModel);
+    }
+
+    @Override
+    public void onDeleteClicked(PoojaModel poojaModel) {
         new AlertDialog.Builder(this)
-                .setTitle("Play Video?")
-                .setMessage("Are you sure you want to start "+poojaModel.getTitle())
-                .setPositiveButton("Yes,Go to Video", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        currentPooja=poojaModel;
-                        launcher.launch(poojaModel.getVideoId());
-                    }
-                }) .setNegativeButton("Delete Video", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            dbHelper.deleteFromDb(poojaModel.getId(),day);
-                            updatelist();
-                            Toast.makeText(PoojaListActivity.this, "Deleted days ", Toast.LENGTH_SHORT).show();
-                        }
-                        catch (Exception e)
-                        {
-                            Toast.makeText(PoojaListActivity.this, "Error While deleting", Toast.LENGTH_SHORT).show();
-                        }
-
-
+                .setTitle("Remove Pooja?")
+                .setMessage("Remove \"" + poojaModel.getTitle().trim() + "\" from " + day + "'s schedule?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    try {
+                        dbHelper.deleteFromDb(poojaModel.getId(), day);
+                        updatelist();
+                        Toast.makeText(PoojaListActivity.this, "Removed from " + day, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(PoojaListActivity.this, "Error while removing Pooja", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNeutralButton("No, Go Back",null)
+                .setNegativeButton("Cancel", null)
                 .setIcon(R.drawable.omicon)
                 .show();
     }
 
-    private void updatelist() {
-        arrPooja=dbHelper.fetchPooja(day);
-        recyclerView.setAdapter(new RecyclerPoojaAdapter(this,arrPooja,this));
-
-    }
-
     @Override
     public void onCheckboxClicked(PoojaModel poojaModel) {
-        Log.d("checkbox", String.valueOf(poojaModel.isStatus()));
-        //update db here
-        dbHelper.updateDbForStatus(poojaModel.getId(),!poojaModel.isStatus());
-        //update arrList
-        arrPooja=dbHelper.fetchPooja(day);
-
-        poojaModel.setStatus(!poojaModel.isStatus());
-
-        Details.setText(dbHelper.fetchPoojaDetails(this,day));
-
+        boolean nextStatus = !poojaModel.isStatus();
+        dbHelper.updateDbForStatus(poojaModel.getId(), nextStatus);
+        poojaModel.setStatus(nextStatus);
+        updatelist();
     }
-
-
 }

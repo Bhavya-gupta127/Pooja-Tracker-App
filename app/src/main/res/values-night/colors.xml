@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="status_bar_color">#FF12101C</color>
     <color name="add_header_text">#FF1F1B2E</color>
-    <color name="card_surface_bg">#EB1E1C2C</color>
+    <color name="card_surface_bg">#EE1E1C2C</color>
     <color name="card_surface_stroke">#40B8A8F0</color>
+    <color name="today_card_bg">#F2282340</color>
+    <color name="today_card_stroke">#FFC8B6FF</color>
     <color name="card_text_primary">#FFF5F3FF</color>
     <color name="card_text_secondary">#FFC2BBD9</color>
     <color name="input_bg">#FF2B283D</color>
@@ -15,4 +18,14 @@
     <color name="secondary_btn_bg">#FF302B47</color>
     <color name="secondary_btn_stroke">#FF6E6299</color>
     <color name="secondary_btn_text">#FFEDE7FF</color>
+
+    <color name="badge_pill_bg">#FF322C4A</color>
+    <color name="badge_pill_text">#FFE2D9FF</color>
+    <color name="badge_today_bg">#FFD0BCFF</color>
+    <color name="badge_today_text">#FF1F1B2E</color>
+    <color name="badge_done_bg">#FF193B2D</color>
+    <color name="badge_done_text">#FF6EE7B7</color>
+    <color name="progress_track_bg">#FF322C4A</color>
+    <color name="progress_fill_color">#FFD0BCFF</color>
+    <color name="danger_subtle_text">#FFFF8FA3</color>
 </resources>

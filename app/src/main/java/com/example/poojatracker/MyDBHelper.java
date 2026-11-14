@@ -197,83 +197,72 @@ public class MyDBHelper extends SQLiteOpenHelper {
 //            }
 //        });
 //    }
-    //get total time and number
-    public String fetchPoojaDetails(Context context, String currentDay) {
+    public void ensureDailyReset(Context context) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            android.content.SharedPreferences sharedPreferences =
+                    context.getSharedPreferences("lastOpen", Context.MODE_PRIVATE);
+            String today = String.valueOf(java.time.LocalDate.now());
+            String prevDate = sharedPreferences.getString("date", null);
+            if (prevDate == null) {
+                sharedPreferences.edit().putString("date", today).apply();
+            } else if (!prevDate.equals(today)) {
+                sharedPreferences.edit().putString("date", today).apply();
+                updateDbForNewDay();
+            }
+        }
+    }
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT "
-                        + TABLE_POOJA + "." + KEY_ID + " , "
-                        + TABLE_POOJA + "." + KEY_TITLE + " , "
-                        + TABLE_POOJA + "." + KEY_DESC + " , "
-                        + TABLE_POOJA + "." + KEY_URL + " , "
-                        + TABLE_POOJA + "." + KEY_STATUS
-                        + " FROM "
-                        + TABLE_POOJA
+    public int[] getDayCounts(String currentDay) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int checked = 0;
+        int total = 0;
+        try (Cursor cursor = db.rawQuery(
+                "SELECT " + TABLE_POOJA + "." + KEY_STATUS
+                        + " FROM " + TABLE_POOJA
                         + " JOIN " + TABLE_DAY
                         + " ON " + TABLE_POOJA + "." + KEY_ID + " = " + TABLE_DAY + "." + KEY_ID
-                        + " WHERE " + TABLE_DAY + "." + KEY_DAY + " = " + "'" + currentDay + "'" + " ;"
-                , null
-        );
-        String details;
-        int checked = 0;
-        int unchecked = 0;
-        long watchedDuration = 0;
-        long unwatchedDuration = 0;
-
-
-
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(context);
-        while (cursor.moveToNext()) {
-
-//            String videoId = "gXWXKjR-qII"; //default video
-//            String url = cursor.getString(3);
-//
-//            for (int i = 0; i < url.length() - 1; i++) {
-//                if (url.charAt(i) == 'v' && url.charAt(i + 1) == '=') {
-//                    videoId = url.substring(i + 2, i + 13);
-//                    break;
-//                }
-//            }
-//            String finalVideoId = videoId;
-//            String apiurl="https://www.googleapis.com/youtube/v3/videos?id="+videoId+"&part=contentDetails&key={your_key_here}";
-//            try {
-
-//                playvid(context,finalVideoId);
-//                JsonObjectRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, apiurl, null, new Response.Listener<JSONObject>() {
-//                    public void onResponse(JSONObject response) {
-//                        try {
-//                            for (int i = 0; i < response.length(); i++) {
-//                                Log.d("bhavya", String.valueOf(response));
-//                            }
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.d("TestJson", String.valueOf(error));
-//                    }
-//                });
-//                requestQueue.add(jsonObjectRequest);
-
-                if (cursor.getInt(4) == 1) {
-//                    watchedDuration += tracker.getVideoDuration();
+                        + " WHERE " + TABLE_DAY + "." + KEY_DAY + " = ?",
+                new String[]{currentDay}
+        )) {
+            while (cursor.moveToNext()) {
+                total++;
+                if (cursor.getInt(0) == 1) {
                     checked++;
-                } else {
-//                    unwatchedDuration += tracker.getVideoDuration();
-                    unchecked++;
                 }
-//            } catch (Exception e) {
-//                Log.d("bhavya", "error");
-//            }
+            }
         }
-        cursor.close();
-        details = checked + " / " + (unchecked + checked) ;
-//                + "  " + watchedDuration + " / " + (watchedDuration + unwatchedDuration);
-        return details;
+        return new int[]{checked, total};
+    }
+
+    public Map<String, int[]> getAllDayCounts() {
+        Map<String, int[]> summary = new HashMap<>();
+        for (String d : DAYS_ORDER) {
+            summary.put(d, new int[]{0, 0});
+        }
+        SQLiteDatabase db = this.getReadableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT d." + KEY_DAY + ", COUNT(*), SUM(CASE WHEN p." + KEY_STATUS + " = 1 THEN 1 ELSE 0 END)"
+                        + " FROM " + TABLE_DAY + " d"
+                        + " JOIN " + TABLE_POOJA + " p ON p." + KEY_ID + " = d." + KEY_ID
+                        + " GROUP BY d." + KEY_DAY,
+                null
+        )) {
+            while (cursor.moveToNext()) {
+                String day = cursor.getString(0);
+                int total = cursor.getInt(1);
+                int checked = cursor.getInt(2);
+                if (day != null) {
+                    summary.put(day, new int[]{checked, total});
+                }
+            }
+        }
+        return summary;
+    }
+
+    //get total time and number
+    public String fetchPoojaDetails(Context context, String currentDay) {
+        int[] counts = getDayCounts(currentDay);
+        return counts[0] + " / " + counts[1];
     }
 
 
@@ -427,6 +416,23 @@ public class MyDBHelper extends SQLiteOpenHelper {
         return jsonString;
     }
 
+    public static int deterministicId(String title, String contentUrl) {
+        String key = (title == null ? "" : title.trim().toLowerCase()) + "|"
+                + (contentUrl == null ? "" : contentUrl.trim());
+        int hash = key.hashCode() & 0x7fffffff;
+        return 100000 + (hash % 899999);
+    }
+
+    public int getTotalUniquePoojaCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        try (Cursor cursor = db.rawQuery("SELECT COUNT(DISTINCT " + KEY_ID + ") FROM " + TABLE_DAY, null)) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+        }
+        return 0;
+    }
+
     public void deleteFromDb(int id, String day) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_DAY, "id = ? AND day = ?", new String[]{String.valueOf(id), day});
@@ -435,7 +441,6 @@ public class MyDBHelper extends SQLiteOpenHelper {
                 KEY_ID + " = ? AND NOT EXISTS (SELECT 1 FROM " + TABLE_DAY + " WHERE " + TABLE_DAY + "." + KEY_ID + " = ?)",
                 new String[]{String.valueOf(id), String.valueOf(id)}
         );
-        db.close();
     }
 
     public int getFirstUnchecked(String day) {

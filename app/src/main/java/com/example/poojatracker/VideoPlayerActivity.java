@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,11 +31,14 @@ public class VideoPlayerActivity extends AppCompatActivity {
     float savedSeekTo = 0f;
     boolean hasLaunchedExternalFallback = false;
     boolean appliedInitialPlaybackRate = false;
+    YouTubePlayer activePlayer = null;
+    PlayerConstants.PlaybackRate selectedRate = PlayerConstants.PlaybackRate.RATE_1;
     YouTubePlayerTracker tracker = new YouTubePlayerTracker();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setStatusBarColor(Color.parseColor("#12101C"));
         setContentView(R.layout.activity_video_player);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -43,21 +46,69 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String rawInput = intent != null ? intent.getStringExtra("contentURL") : null;
+        String title = intent != null ? intent.getStringExtra("title") : null;
+        String desc = intent != null ? intent.getStringExtra("desc") : null;
         videoId = PoojaModel.extractVideoId(rawInput);
+
+        TextView playerTitle = findViewById(R.id.playerPoojaTitle);
+        TextView playerDesc = findViewById(R.id.playerPoojaDesc);
+        if (title != null && !title.trim().isEmpty()) {
+            playerTitle.setText(title.trim());
+        }
+        if (desc != null && !desc.trim().isEmpty()) {
+            playerDesc.setText(desc.trim());
+            playerDesc.setVisibility(View.VISIBLE);
+        }
 
         SharedPreferences sharedPreferences = getSharedPreferences("videoId", MODE_PRIVATE);
         savedSeekTo = sharedPreferences.getFloat(videoId, 0f);
+        String savedRateKey = sharedPreferences.getString("preferred_playback_rate", "1x");
+        selectedRate = keyToRate(savedRateKey);
 
+        Button btnBackPlayer = findViewById(R.id.btnBackPlayer);
         TextView errorBanner = findViewById(R.id.player_error_banner);
         Button btnOpenYoutube = findViewById(R.id.btn_open_youtube);
         Button btnMarkCompleted = findViewById(R.id.btn_mark_completed);
         Button btnNotCompleted = findViewById(R.id.btn_not_completed);
 
+        TextView speed05x = findViewById(R.id.speed05x);
+        TextView speed1x = findViewById(R.id.speed1x);
+        TextView speed15x = findViewById(R.id.speed15x);
+        TextView speed2x = findViewById(R.id.speed2x);
+        TextView[] speedChips = new TextView[]{speed05x, speed1x, speed15x, speed2x};
+        String[] speedKeys = new String[]{"0.5x", "1x", "1.5x", "2x"};
+
+        Runnable updateSpeedChipStyles = () -> {
+            String activeKey = rateToKey(selectedRate);
+            for (int i = 0; i < speedChips.length; i++) {
+                if (speedKeys[i].equals(activeKey)) {
+                    speedChips[i].setBackgroundResource(R.drawable.gradientbtn);
+                    speedChips[i].setTextColor(Color.parseColor("#1F1B2E"));
+                } else {
+                    speedChips[i].setBackgroundColor(Color.parseColor("#2D2844"));
+                    speedChips[i].setTextColor(Color.parseColor("#E2D9FF"));
+                }
+            }
+        };
+        updateSpeedChipStyles.run();
+
+        for (int i = 0; i < speedChips.length; i++) {
+            final String key = speedKeys[i];
+            speedChips[i].setOnClickListener(v -> {
+                selectedRate = keyToRate(key);
+                sharedPreferences.edit().putString("preferred_playback_rate", key).apply();
+                updateSpeedChipStyles.run();
+                if (activePlayer != null) {
+                    activePlayer.setPlaybackRate(selectedRate);
+                }
+            });
+        }
+
+        btnBackPlayer.setOnClickListener(v -> showCompletionDialog());
         btnOpenYoutube.setOnClickListener(v -> {
             int seekSec = tracker.getCurrentSecond() > 0f ? (int) tracker.getCurrentSecond() : (int) savedSeekTo;
             openInYouTubeApp(videoId, seekSec);
         });
-
         btnMarkCompleted.setOnClickListener(v -> finishWithStatus("true"));
         btnNotCompleted.setOnClickListener(v -> finishWithStatus("false"));
 
@@ -75,11 +126,12 @@ public class VideoPlayerActivity extends AppCompatActivity {
         youTubePlayerView.initialize(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                activePlayer = youTubePlayer;
                 savedSeekTo = sharedPreferences.getFloat(finalId, 0f);
                 Log.d("youtube2", "Loading videoId=" + finalId + " at " + savedSeekTo);
                 youTubePlayer.addListener(tracker);
                 youTubePlayer.loadVideo(finalId, savedSeekTo);
-                youTubePlayer.setPlaybackRate(PlayerConstants.PlaybackRate.RATE_2);
+                youTubePlayer.setPlaybackRate(selectedRate);
             }
 
             @Override
@@ -88,7 +140,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                     errorBanner.setVisibility(View.GONE);
                     if (!appliedInitialPlaybackRate) {
                         appliedInitialPlaybackRate = true;
-                        youTubePlayer.setPlaybackRate(PlayerConstants.PlaybackRate.RATE_2);
+                        youTubePlayer.setPlaybackRate(selectedRate);
                     }
                 }
             }
@@ -121,6 +173,20 @@ public class VideoPlayerActivity extends AppCompatActivity {
         });
     }
 
+    private PlayerConstants.PlaybackRate keyToRate(String key) {
+        if ("0.5x".equals(key)) return PlayerConstants.PlaybackRate.RATE_0_5;
+        if ("1.5x".equals(key)) return PlayerConstants.PlaybackRate.RATE_1_5;
+        if ("2x".equals(key)) return PlayerConstants.PlaybackRate.RATE_2;
+        return PlayerConstants.PlaybackRate.RATE_1;
+    }
+
+    private String rateToKey(PlayerConstants.PlaybackRate rate) {
+        if (rate == PlayerConstants.PlaybackRate.RATE_0_5) return "0.5x";
+        if (rate == PlayerConstants.PlaybackRate.RATE_1_5) return "1.5x";
+        if (rate == PlayerConstants.PlaybackRate.RATE_2) return "2x";
+        return "1x";
+    }
+
     private void openInYouTubeApp(String id, int startSeconds) {
         String webUrl = "https://www.youtube.com/watch?v=" + id
                 + (startSeconds > 0 ? "&t=" + startSeconds + "s" : "");
@@ -149,19 +215,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     private void showCompletionDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Go Back?")
-                .setMessage("Please Share the Status of Completion")
-                .setPositiveButton("Completed( Go Back )", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishWithStatus("true");
-                    }
-                })
-                .setNegativeButton("Not Completed (Go Back)", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishWithStatus("false");
-                    }
-                })
-                .setNeutralButton("Continue Watching (Stay Here)", null)
+                .setTitle("Pooja Status")
+                .setMessage("Mark this Pooja as completed for today?")
+                .setPositiveButton("Completed", (dialog, which) -> finishWithStatus("true"))
+                .setNegativeButton("Not Yet", (dialog, which) -> finishWithStatus("false"))
+                .setNeutralButton("Keep Watching", null)
                 .setIcon(R.drawable.omicon)
                 .show();
     }
@@ -171,10 +229,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         super.onPause();
         if (videoId != null && tracker.getCurrentSecond() > 0f) {
             SharedPreferences sharedPreferences = getSharedPreferences("videoId", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            Log.d("youtube", String.valueOf(tracker.getCurrentSecond()));
-            editor.putFloat(videoId, tracker.getCurrentSecond());
-            editor.apply();
+            sharedPreferences.edit().putFloat(videoId, tracker.getCurrentSecond()).apply();
         }
     }
 }

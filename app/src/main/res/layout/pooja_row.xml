@@ -1,89 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="#BB1212">
+    android:paddingBottom="2dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mainCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="7dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/card_surface_bg"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:id="@+id/llrow"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="11dp">
+            android:padding="12dp">
 
-            <ImageView
-                android:id="@+id/pooja_img"
-                android:layout_width="70dp"
-                android:layout_height="70dp" />
+            <!-- 16:9 Rounded Thumbnail with Play Badge -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="104dp"
+                android:layout_height="62dp"
+                app:cardBackgroundColor="#1E1C2C"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp">
 
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-            >
+                <ImageView
+                    android:id="@+id/pooja_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Video thumbnail"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="5dp"
+                    android:background="#B3000000"
+                    android:paddingStart="6dp"
+                    android:paddingTop="1dp"
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="1dp"
+                    android:text="▶"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- Title, Description & Action Chip -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pooja_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Pooja Name"
+                    android:textColor="@color/card_text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/pooja_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Description"
+                    android:textColor="@color/card_text_secondary"
+                    android:textSize="13sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="11dp"
-                    android:layout_centerVertical="true"
-                    android:orientation="vertical">
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/pooja_name"
-                        android:layout_width="match_parent"
+                        android:id="@+id/rowPlayHint"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pooja Name"
-                        android:textSize="18sp"
+                        android:text="▶ Tap to play"
+                        android:textColor="@color/accent_link"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/pooja_desc"
-                        android:layout_width="match_parent"
+                        android:id="@+id/btnDeleteRow"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pooja description asdfdaf here"
-                        android:textSize="10sp" />
-
-                    <TextView
-                        android:id="@+id/contentURL"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Pooja url here"
-                        android:textSize="10sp" />
-
-
+                        android:layout_marginStart="14dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingStart="4dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="4dp"
+                        android:paddingBottom="2dp"
+                        android:text="Remove"
+                        android:textColor="@color/danger_subtle_text"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/contentURL"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    >
+                    android:visibility="gone" />
+            </LinearLayout>
 
-                    <CheckBox
-                        android:id="@+id/status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        />
-
-                </LinearLayout>
-
-        </RelativeLayout>
+            <CheckBox
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/checkbox_tint"
+                android:minWidth="40dp"
+                android:minHeight="40dp" />
 
         </LinearLayout>
-
-
-</androidx.cardview.widget.CardView>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
