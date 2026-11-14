@@ -131,11 +131,8 @@ public class MainActivity extends AppCompatActivity {
         String formattedDate = new SimpleDateFormat("EEE, d MMM", Locale.getDefault()).format(new Date());
         if (todayTotal > 0) {
             homeSubtitle.setText(formattedDate + " • " + todayChecked + " of " + todayTotal + " completed today");
-        } else if (dbHelper.getTotalUniquePoojaCount() == 0
-                && getPackageManager().getLaunchIntentForPackage(OldAppMigrationService.OLD_PACKAGE) != null) {
-            homeSubtitle.setText(formattedDate + " • Old app detected! Tap + Manage to recover");
         } else {
-            homeSubtitle.setText(formattedDate + " • Tap + Manage to build your schedule");
+            homeSubtitle.setText(formattedDate + " • Tap + Manage to import or add Poojas");
         }
     }
 }

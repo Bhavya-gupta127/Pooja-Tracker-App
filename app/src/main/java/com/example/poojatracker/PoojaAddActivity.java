@@ -7,10 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,9 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,16 +40,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Random;
 
 public class PoojaAddActivity extends AppCompatActivity {
 
+    private static final String PREFS_MIGRATION = "screen_media_migration";
+    private static final String KEY_LAST_MEDIA_COUNT = "last_media_count";
+
     private MyDBHelper dbHelper;
     private final String[] dayMapping = MyDBHelper.DAYS_ORDER;
-    private View legacyRecoveryCard;
+    private final ScreenMediaPlaylistImporter mediaImporter = new ScreenMediaPlaylistImporter();
+
     private TextView legacyRecoveryStatus;
     private Button btnMigrateOldApp;
-    private boolean openedAccessibilitySettings = false;
 
     private final ActivityResultLauncher<String> legacyStoragePermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -76,6 +75,13 @@ public class PoojaAddActivity extends AppCompatActivity {
                 }
             });
 
+    private final ActivityResultLauncher<String[]> importScreenMediaLauncher =
+            registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(), uris -> {
+                if (uris != null && !uris.isEmpty()) {
+                    startScreenMediaScan(uris);
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +98,26 @@ public class PoojaAddActivity extends AppCompatActivity {
         Button btnBackAdd = findViewById(R.id.btnBackAdd);
         btnBackAdd.setOnClickListener(view -> finish());
 
-        legacyRecoveryCard = findViewById(R.id.legacyRecoveryCard);
         legacyRecoveryStatus = findViewById(R.id.legacyRecoveryStatus);
         btnMigrateOldApp = findViewById(R.id.btnMigrateOldApp);
-        btnMigrateOldApp.setOnClickListener(view -> handleOldAppRecoveryClick());
+        Button btnLoadStarterPack = findViewById(R.id.btnLoadStarterPack);
+
+        btnMigrateOldApp.setOnClickListener(view -> showScreenMediaPickerGuide());
+        btnLoadStarterPack.setOnClickListener(view -> {
+            try {
+                JSONArray bundled = ScreenMediaPlaylistImporter.loadBundledJsonArray(this);
+                int imported = importPoojaJsonArray(bundled);
+                Toast.makeText(
+                        this,
+                        "Loaded " + imported + " Poojas into your weekly schedule!",
+                        Toast.LENGTH_LONG
+                ).show();
+                refreshRecoveryBanner();
+            } catch (Exception e) {
+                Log.e("PoojaAdd", "Failed to load bundled Pooja pack", e);
+                Toast.makeText(this, "Unable to load bundled pack", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // JSON Import / Export controls
         Button submitJson = findViewById(R.id.submitJSON);
@@ -124,7 +146,7 @@ public class PoojaAddActivity extends AppCompatActivity {
                                     "Imported " + imported + " Poojas successfully!",
                                     Toast.LENGTH_SHORT
                             ).show();
-                            refreshLegacyRecoveryBanner();
+                            refreshRecoveryBanner();
                         } else {
                             Toast.makeText(
                                     PoojaAddActivity.this,
@@ -196,7 +218,6 @@ public class PoojaAddActivity extends AppCompatActivity {
             cb.setOnCheckedChangeListener(dayChangeListener);
         }
 
-        // Pre-check day when navigated from a specific day's "+ Add" button
         String preselectDay = getIntent() != null ? getIntent().getStringExtra("preselectDay") : null;
         if (preselectDay != null) {
             for (int i = 0; i < dayMapping.length; i++) {
@@ -274,135 +295,98 @@ public class PoojaAddActivity extends AppCompatActivity {
                 Toast.makeText(PoojaAddActivity.this, "Unexpected error while saving Pooja", Toast.LENGTH_SHORT).show();
             }
         });
-
-        checkMigrationResultIntent(getIntent());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        checkMigrationResultIntent(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refreshLegacyRecoveryBanner();
-        if (openedAccessibilitySettings && OldAppMigrationService.isServiceEnabled(this)) {
-            openedAccessibilitySettings = false;
-            Toast.makeText(
-                    this,
-                    "Auto-Recovery enabled! Tap 'Start Auto-Scan Now' to copy your old playlist.",
-                    Toast.LENGTH_LONG
-            ).show();
+        refreshRecoveryBanner();
+    }
+
+    private void refreshRecoveryBanner() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_MIGRATION, MODE_PRIVATE);
+        int lastMediaCount = prefs.getInt(KEY_LAST_MEDIA_COUNT, 0);
+        if (lastMediaCount > 0) {
+            legacyRecoveryStatus.setText("✓ Recovered " + lastMediaCount + " Poojas from your screen recording / screenshots! You can add more screenshots anytime.");
         }
     }
 
-    private void checkMigrationResultIntent(Intent intent) {
-        if (intent != null && intent.hasExtra("migrationCompletedCount")) {
-            int count = intent.getIntExtra("migrationCompletedCount", 0);
-            intent.removeExtra("migrationCompletedCount");
-            if (count > 0) {
-                new AlertDialog.Builder(this)
-                        .setTitle("Playlist Recovered!")
-                        .setMessage("Successfully recovered " + count + " Poojas across your Monday–Sunday schedule from the old app!\n\nTip: Tap 'Export Schedule to Downloads' below anytime to save a clean backup file.")
-                        .setPositiveButton("View My Schedule", (d, w) -> finish())
-                        .setNeutralButton("Stay Here", null)
-                        .setIcon(R.drawable.omicon)
-                        .show();
+    private void showScreenMediaPickerGuide() {
+        String howItWorks = "Since the old 2023 app's Export button crashes, you can recover your exact playlist with zero permissions:\n\n"
+                + "1. Start your phone's built-in Screen Recorder (from Quick Settings), open your old 'Pooja Scheduler' app, and scroll through Monday → Sunday (~25s video) — OR take screenshots.\n\n"
+                + "2. Tap 'Select Video / Screenshots' below and pick that .mp4 video (or multiple screenshots). Every Pooja, Hindi description, YouTube link, and weekday will be extracted offline!";
+        new AlertDialog.Builder(this)
+                .setTitle("Import from Screen Video / Screenshots")
+                .setMessage(howItWorks)
+                .setPositiveButton("Select Video / Screenshots", (d, w) ->
+                        importScreenMediaLauncher.launch(new String[]{"video/*", "image/*"})
+                )
+                .setNegativeButton("Cancel", null)
+                .setIcon(R.drawable.omicon)
+                .show();
+    }
+
+    private void startScreenMediaScan(List<Uri> uris) {
+        AlertDialog progressDialog = new AlertDialog.Builder(this)
+                .setTitle("Scanning Playlist...")
+                .setMessage("Reading frames on-device (0 found so far)...")
+                .setCancelable(false)
+                .setIcon(R.drawable.omicon)
+                .create();
+        progressDialog.show();
+
+        btnMigrateOldApp.setEnabled(false);
+        mediaImporter.importFromMediaUris(this, uris, dbHelper, new ScreenMediaPlaylistImporter.Callback() {
+            @Override
+            public void onProgress(int currentStep, int totalSteps, int recoveredPoojas) {
+                if (isFinishing() || isDestroyed()) return;
+                progressDialog.setMessage(
+                        "Scanning frame " + currentStep + " / " + totalSteps
+                                + " • Found " + recoveredPoojas + " Poojas..."
+                );
             }
-        }
-    }
 
-    private boolean isOldAppInstalled() {
-        if (getPackageManager().getLaunchIntentForPackage(OldAppMigrationService.OLD_PACKAGE) != null) {
-            return true;
-        }
-        try {
-            getPackageManager().getPackageInfo(OldAppMigrationService.OLD_PACKAGE, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
+            @Override
+            public void onComplete(int recoveredPoojas, int dayLinksAdded) {
+                if (isFinishing() || isDestroyed()) return;
+                progressDialog.dismiss();
+                btnMigrateOldApp.setEnabled(true);
 
-    private void refreshLegacyRecoveryBanner() {
-        boolean installed = isOldAppInstalled();
-        boolean serviceReady = OldAppMigrationService.isServiceEnabled(this);
-        SharedPreferences prefs = getSharedPreferences(OldAppMigrationService.PREFS_NAME, MODE_PRIVATE);
-        int lastRecovered = prefs.getInt(OldAppMigrationService.KEY_LAST_COUNT, 0);
+                if (recoveredPoojas > 0) {
+                    getSharedPreferences(PREFS_MIGRATION, MODE_PRIVATE)
+                            .edit()
+                            .putInt(KEY_LAST_MEDIA_COUNT, recoveredPoojas)
+                            .apply();
+                    refreshRecoveryBanner();
 
-        if (!installed && lastRecovered == 0 && dbHelper.getTotalUniquePoojaCount() > 0) {
-            legacyRecoveryCard.setVisibility(View.GONE);
-            return;
-        }
-        legacyRecoveryCard.setVisibility(View.VISIBLE);
+                    new AlertDialog.Builder(PoojaAddActivity.this)
+                            .setTitle("Playlist Recovered!")
+                            .setMessage("Imported " + recoveredPoojas + " unique Poojas (" + dayLinksAdded + " weekday entries) from your recording/screenshots!\n\nTip: Tap 'Export Schedule to Downloads' below to save a clean JSON backup.")
+                            .setPositiveButton("View My Schedule", (d, w) -> finish())
+                            .setNeutralButton("Stay Here", null)
+                            .setIcon(R.drawable.omicon)
+                            .show();
+                } else {
+                    Toast.makeText(
+                            PoojaAddActivity.this,
+                            "No Pooja cards with YouTube links detected. Make sure the recording/screenshot shows a weekday list (Monday–Sunday) in the old app.",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
 
-        if (lastRecovered > 0) {
-            legacyRecoveryStatus.setText("✓ Recovered " + lastRecovered + " Poojas from your old Pooja Scheduler! You can re-scan anytime if needed.");
-            btnMigrateOldApp.setText("Re-Scan Old Pooja Scheduler");
-        } else if (serviceReady) {
-            legacyRecoveryStatus.setText("✓ Auto-Recovery helper is ready! Tap below to open the old app and copy Monday–Sunday automatically (~10s).");
-            btnMigrateOldApp.setText("Start Auto-Scan Now →");
-        } else if (installed) {
-            legacyRecoveryStatus.setText("✓ Old 'Pooja Scheduler' detected! Since its Export button crashes, tap below to auto-scan Monday–Sunday directly on your phone (no PC needed).");
-            btnMigrateOldApp.setText("Auto-Recover from Old Pooja Scheduler");
-        } else {
-            legacyRecoveryStatus.setText("Have the old 'Pooja Scheduler' app installed with a broken Export button? Tap below to auto-scan Monday–Sunday directly on your phone.");
-            btnMigrateOldApp.setText("Recover from Old Pooja Scheduler");
-        }
-    }
-
-    private void handleOldAppRecoveryClick() {
-        if (!OldAppMigrationService.isServiceEnabled(this)) {
-            String message = "Because the 2023 Pooja Scheduler app's Export button crashes on deleted items, Pooja Tracker includes a built-in screen reader to rescue your playlist directly on your phone!\n\n"
-                    + "1. Tap 'Open Accessibility' and switch ON 'Pooja Tracker Old-App Importer'.\n"
-                    + "   • Android 13/14+ note: If Android says 'Restricted setting', open Phone Settings → Apps → Pooja Tracker → tap ⋮ (top-right) → Allow restricted settings.\n\n"
-                    + "2. Return here and tap 'Start Auto-Scan Now' — it will automatically walk Monday–Sunday in the old app, copy every Pooja + YouTube link, and turn itself OFF when done!";
-            new AlertDialog.Builder(this)
-                    .setTitle("1-Time Old Playlist Recovery")
-                    .setMessage(message)
-                    .setPositiveButton("Open Accessibility", (dialog, which) -> {
-                        openedAccessibilitySettings = true;
-                        startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .setIcon(R.drawable.omicon)
-                    .show();
-            return;
-        }
-
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage(OldAppMigrationService.OLD_PACKAGE);
-        if (launchIntent == null) {
-            launchIntent = new Intent(Intent.ACTION_MAIN);
-            launchIntent.setComponent(new ComponentName(
-                    OldAppMigrationService.OLD_PACKAGE,
-                    "com.example.poojatracker.MainActivity"
-            ));
-        }
-        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        try {
-            OldAppMigrationService.startAutoMigration(this);
-            Toast.makeText(
-                    this,
-                    "Auto-scanning Monday–Sunday... Hands off for ~10 seconds!",
-                    Toast.LENGTH_LONG
-            ).show();
-            startActivity(launchIntent);
-        } catch (ActivityNotFoundException e) {
-            OldAppMigrationService.isAutoActive(this);
-            getSharedPreferences(OldAppMigrationService.PREFS_NAME, MODE_PRIVATE)
-                    .edit()
-                    .putBoolean(OldAppMigrationService.KEY_AUTO_ACTIVE, false)
-                    .apply();
-            Toast.makeText(
-                    this,
-                    "Old 'Pooja Scheduler' app (com.example.poojatracker) was not found on this phone.",
-                    Toast.LENGTH_LONG
-            ).show();
-        }
+            @Override
+            public void onError(String errorMessage) {
+                if (isFinishing() || isDestroyed()) return;
+                progressDialog.dismiss();
+                btnMigrateOldApp.setEnabled(true);
+                Toast.makeText(
+                        PoojaAddActivity.this,
+                        "Scan failed: " + errorMessage,
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
     private int importPoojaJsonArray(JSONArray response) {
@@ -426,8 +410,6 @@ public class PoojaAddActivity extends AppCompatActivity {
                     continue;
                 }
 
-                // Legacy 2023 exports emitted multiple objects with the same id (one per day).
-                // Clear existing days only on the first occurrence of an id in this batch so all days merge cleanly!
                 if (seenIdsInBatch.add(id)) {
                     dbHelper.addPooja(id, title, desc, contentUrl, status);
                     dbHelper.clearDaysForPooja(id);
@@ -463,7 +445,6 @@ public class PoojaAddActivity extends AppCompatActivity {
                 }
             }
 
-            // Check if the selected file is a raw SQLite PoojaDB database ("SQLite format 3")
             byte[] header = new byte[15];
             int headerLen;
             try (java.io.FileInputStream fis = new java.io.FileInputStream(tempFile)) {

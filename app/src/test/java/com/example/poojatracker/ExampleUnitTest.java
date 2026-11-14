@@ -75,4 +75,55 @@ public class ExampleUnitTest {
         assertNotEquals(idMon, idOther);
         assertTrue(idMon >= 100000 && idMon < 1000000);
     }
+
+    @Test
+    public void parseExtractedLines_extractsCardsIgnoresThumbnailNoiseAndSkipsMainMenu() {
+        List<ScreenMediaPlaylistImporter.KnownPooja> catalog = Arrays.asList(
+                new ScreenMediaPlaylistImporter.KnownPooja(
+                        "Mangal Navgrah Stotra",
+                        "मंगल स्तोत्र",
+                        "https://www.youtube.com/watch?v=0EZnB_FdC8c"
+                )
+        );
+
+        List<ScreenMediaPlaylistImporter.OcrLine> mondayFrame = Arrays.asList(
+                // Status bar at top (ignored)
+                new ScreenMediaPlaylistImporter.OcrLine("12:06  81%", 60, 20, 980, 65),
+                // Day header
+                new ScreenMediaPlaylistImporter.OcrLine("Monday", 350, 260, 725, 365),
+                // Count header (ignored)
+                new ScreenMediaPlaylistImporter.OcrLine("4 / 21", 910, 520, 1020, 565),
+                // Left thumbnail overlay text inside 70x70 image (ignored because right < 0.265 * 1080)
+                new ScreenMediaPlaylistImporter.OcrLine("मंगल स्तोत्र कुंडली", 80, 790, 255, 860),
+                // Card 1 (known catalog entry even with 0->O OCR confusion)
+                new ScreenMediaPlaylistImporter.OcrLine("Mangal Navgrah Stotra", 310, 765, 890, 820),
+                new ScreenMediaPlaylistImporter.OcrLine("मंगल स्तोत्र", 300, 830, 420, 865),
+                new ScreenMediaPlaylistImporter.OcrLine("https://www.youtube.com/watch?v=OEZnB_FdC8c", 300, 880, 980, 915),
+                // Card 2 (brand-new custom Pooja added by user, not in catalog)
+                new ScreenMediaPlaylistImporter.OcrLine("Custom Bhajan", 300, 1110, 620, 1160),
+                new ScreenMediaPlaylistImporter.OcrLine("https://www.youtube.com/watch?v=Naruxgq6oMU", 300, 1185, 975, 1220)
+        );
+
+        ScreenMediaPlaylistImporter.FrameParseResult res =
+                ScreenMediaPlaylistImporter.parseExtractedLines(mondayFrame, 1080, 2400, "Sunday", catalog);
+        assertEquals("Monday", res.detectedDay);
+        assertEquals(2, res.cards.size());
+
+        assertEquals("Mangal Navgrah Stotra", res.cards.get(0).title);
+        assertEquals("https://www.youtube.com/watch?v=0EZnB_FdC8c", res.cards.get(0).contentUrl);
+        assertEquals("Monday", res.cards.get(0).day);
+
+        assertEquals("Custom Bhajan", res.cards.get(1).title);
+        assertEquals("https://www.youtube.com/watch?v=Naruxgq6oMU", res.cards.get(1).contentUrl);
+
+        // Main menu frame with 7 weekday buttons should return 0 cards
+        List<ScreenMediaPlaylistImporter.OcrLine> mainMenu = Arrays.asList(
+                new ScreenMediaPlaylistImporter.OcrLine("MONDAY", 350, 430, 730, 500),
+                new ScreenMediaPlaylistImporter.OcrLine("TUESDAY", 350, 680, 730, 750),
+                new ScreenMediaPlaylistImporter.OcrLine("WEDNESDAY", 350, 930, 730, 1000)
+        );
+        ScreenMediaPlaylistImporter.FrameParseResult menuRes =
+                ScreenMediaPlaylistImporter.parseExtractedLines(mainMenu, 1080, 2400, "Monday", catalog);
+        assertEquals(0, menuRes.cards.size());
+    }
 }

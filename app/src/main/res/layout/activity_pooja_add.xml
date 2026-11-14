@@ -61,7 +61,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="20dp">
 
-        <!-- Legacy Old-App Playlist Auto-Recovery Card -->
+        <!-- Legacy Old-App Playlist Recovery Card (Zero Permissions / Play-Protect Safe) -->
         <LinearLayout
             android:id="@+id/legacyRecoveryCard"
             android:layout_width="match_parent"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:text="Old 'Pooja Scheduler' Export broken? Auto-scan Monday–Sunday directly from the old app on your phone (no PC needed)."
+                android:text="Old app Export broken? Screen-record (or screenshot) Monday–Sunday in your old 'Pooja Scheduler' app, then select the video/screenshots below!"
                 android:textColor="@color/card_text_secondary"
                 android:textSize="12sp" />
 
@@ -94,10 +94,22 @@
                 android:layout_height="44dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/gradientbtn"
-                android:text="Auto-Recover from Old Pooja Scheduler"
+                android:text="Import Screen Video / Screenshots"
                 android:textAllCaps="false"
                 android:textColor="@color/gradient_btn_text"
                 android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLoadStarterPack"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/btn_secondary_surface"
+                android:text="Load Saved 48-Pooja Base Pack (1-Tap)"
+                android:textAllCaps="false"
+                android:textColor="@color/secondary_btn_text"
+                android:textSize="13sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
