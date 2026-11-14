@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="add_header_text">#FF1F1B2E</color>
+    <color name="card_surface_bg">#EB1E1C2C</color>
+    <color name="card_surface_stroke">#40B8A8F0</color>
+    <color name="card_text_primary">#FFF5F3FF</color>
+    <color name="card_text_secondary">#FFC2BBD9</color>
+    <color name="input_bg">#FF2B283D</color>
+    <color name="input_stroke">#FF4C456B</color>
+    <color name="input_text">#FFF5F3FF</color>
+    <color name="input_hint">#FF9B93B8</color>
+    <color name="checkbox_tint">#FFD0BCFF</color>
+    <color name="accent_link">#FFD0BCFF</color>
+    <color name="gradient_btn_text">#FF1F1B2E</color>
+    <color name="secondary_btn_bg">#FF302B47</color>
+    <color name="secondary_btn_stroke">#FF6E6299</color>
+    <color name="secondary_btn_text">#FFEDE7FF</color>
+</resources>

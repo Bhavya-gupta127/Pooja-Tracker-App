@@ -18,24 +18,48 @@ public class PoojaModel {
         this.VideoId=VideoIdFromUrl(contentURL);
     }
 
+    private static final String DEFAULT_VIDEO_ID = "gXWXKjR-qII";
+    private static final java.util.regex.Pattern YOUTUBE_URL_PATTERN = java.util.regex.Pattern.compile(
+            "(?:(?:www\\.|m\\.|music\\.)?youtube(?:-nocookie)?\\.com/(?:[^/\\n\\s]+/.+/|(?:v|e(?:mbed)?|shorts|live)/|.*?[?&]v=)|youtu\\.be/)([a-zA-Z0-9_-]{11})"
+    );
+
+    public static boolean hasValidVideoId(String url) {
+        if (url == null) {
+            return false;
+        }
+        String trimmed = url.trim();
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+        if (trimmed.matches("^[a-zA-Z0-9_-]{11}$")) {
+            return true;
+        }
+        return YOUTUBE_URL_PATTERN.matcher(trimmed).find();
+    }
+
+    public static String extractVideoId(String url) {
+        if (url == null) {
+            return DEFAULT_VIDEO_ID;
+        }
+        String trimmed = url.trim();
+        if (trimmed.isEmpty()) {
+            return DEFAULT_VIDEO_ID;
+        }
+        if (trimmed.matches("^[a-zA-Z0-9_-]{11}$")) {
+            return trimmed;
+        }
+        java.util.regex.Matcher matcher = YOUTUBE_URL_PATTERN.matcher(trimmed);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return DEFAULT_VIDEO_ID;
+    }
+
     public String VideoIdFromUrl(String url)
     {
-        String VideoId = "gXWXKjR-qII"; //default video
-        for(int i=0;i<url.length()-1;i++)
-        {
-            if(url.charAt(i)=='v' && url.charAt(i+1)=='=')
-            {
-                VideoId=url.substring(i+2,i+13);
-                break;
-            }
-        }
-        if(VideoId.equals("gXWXKjR-qII"))
-        {
-            if(url.length()>=11)
-                VideoId=url.substring(url.length()-11,url.length());
-        }
-        return VideoId;
+        return extractVideoId(url);
     }
+
     public PoojaModel(int id,String title,String desc,String contentURL,boolean status)
     {
         this.id=id;

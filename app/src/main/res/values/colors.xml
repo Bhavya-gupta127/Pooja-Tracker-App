@@ -9,4 +9,19 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#9C9898</color>
     <color name="status_bar_color">#FF000000</color>
+    <color name="add_header_text">#FF1F1B2E</color>
+    <color name="card_surface_bg">#EEFFFFFF</color>
+    <color name="card_surface_stroke">#336B5B95</color>
+    <color name="card_text_primary">#FF1F1B2E</color>
+    <color name="card_text_secondary">#FF5E5675</color>
+    <color name="input_bg">#FFFFFFFF</color>
+    <color name="input_stroke">#FFD8D0EE</color>
+    <color name="input_text">#FF1F1B2E</color>
+    <color name="input_hint">#FF8A82A6</color>
+    <color name="checkbox_tint">#FF6A4C93</color>
+    <color name="accent_link">#FF5B3CC4</color>
+    <color name="gradient_btn_text">#FF1F1B2E</color>
+    <color name="secondary_btn_bg">#FFF3EEFF</color>
+    <color name="secondary_btn_stroke">#FFBBA9EC</color>
+    <color name="secondary_btn_text">#FF362463</color>
 </resources>

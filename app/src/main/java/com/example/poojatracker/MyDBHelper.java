@@ -21,6 +21,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MyDBHelper extends SQLiteOpenHelper {
@@ -82,7 +84,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
         values.put(KEY_DESC, desc);
         values.put(KEY_URL, contentUrl);
         values.put(KEY_STATUS, status);
-        db.insert(TABLE_POOJA, null, values);
+        db.insertWithOnConflict(TABLE_POOJA, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         Log.d("testjson", "db updated");
     }
 
@@ -91,7 +93,12 @@ public class MyDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_ID, id);
         values.put(KEY_DAY, day);
-        db.insert(TABLE_DAY, null, values);
+        db.insertWithOnConflict(TABLE_DAY, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+    }
+
+    public void clearDaysForPooja(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_DAY, KEY_ID + " = ?", new String[]{String.valueOf(id)});
     }
 
     //    SELECT p.id , p.title , p.description, p.contentUrl, p.status, d.day
@@ -123,6 +130,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
             );
             arrayList.add(poojaModel);
         }
+        cursor.close();
         return arrayList;
     }
     YouTubePlayerTracker tracker = new YouTubePlayerTracker();
@@ -219,6 +227,7 @@ public class MyDBHelper extends SQLiteOpenHelper {
 //                Log.d("bhavya", "error");
 //            }
         }
+        cursor.close();
         details = checked + " / " + (unchecked + checked) ;
 //                + "  " + watchedDuration + " / " + (watchedDuration + unwatchedDuration);
         return details;
@@ -239,62 +248,137 @@ public class MyDBHelper extends SQLiteOpenHelper {
         db.update(TABLE_POOJA, contentValues, null, null);
     }
 
+    public static final String[] DAYS_ORDER = {
+            "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+    };
+
+    static class JoinedPoojaRow {
+        final int id;
+        final String title;
+        final String description;
+        final String contentURL;
+        final boolean status;
+        final String dayValue;
+
+        JoinedPoojaRow(int id, String title, String description, String contentURL, boolean status, String dayValue) {
+            this.id = id;
+            this.title = title != null ? title : "";
+            this.description = description != null ? description : "";
+            this.contentURL = contentURL != null ? contentURL : "";
+            this.status = status;
+            this.dayValue = dayValue;
+        }
+    }
+
+    static class PoojaExportRecord {
+        final int id;
+        final String title;
+        final String description;
+        final String contentURL;
+        final boolean status;
+        final int[] days = new int[7];
+
+        PoojaExportRecord(int id, String title, String description, String contentURL, boolean status) {
+            this.id = id;
+            this.title = title;
+            this.description = description;
+            this.contentURL = contentURL;
+            this.status = status;
+        }
+    }
+
+    static List<PoojaExportRecord> aggregatePoojaRecords(List<JoinedPoojaRow> rows) {
+        Map<Integer, PoojaExportRecord> grouped = new LinkedHashMap<>();
+        if (rows == null) {
+            return new ArrayList<>();
+        }
+        for (JoinedPoojaRow row : rows) {
+            PoojaExportRecord record = grouped.get(row.id);
+            if (record == null) {
+                record = new PoojaExportRecord(row.id, row.title, row.description, row.contentURL, row.status);
+                grouped.put(row.id, record);
+            }
+            if (row.dayValue != null) {
+                for (int i = 0; i < DAYS_ORDER.length; i++) {
+                    if (DAYS_ORDER[i].equalsIgnoreCase(row.dayValue.trim())) {
+                        record.days[i] = 1;
+                        break;
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(grouped.values());
+    }
 
     //export to json
     public String exportToJson() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String[] projection = {"poojas.id", "poojas.title", "poojas.description", "poojas.contentUrl", "poojas.status", "days.day"};
-        String tableName = "poojas";
-        String joinTable = "days";
-        String joinColumn = "poojas.id";
-        String foreignKey = "days.id";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {
+                "poojas.id",
+                "poojas.title",
+                "poojas.description",
+                "poojas.contentUrl",
+                "poojas.status",
+                "days.day"
+        };
         String query = "SELECT " + TextUtils.join(", ", projection) +
-                " FROM " + tableName +
-                " LEFT JOIN " + joinTable +
-                " ON " + joinColumn + " = " + foreignKey;
+                " FROM " + TABLE_POOJA +
+                " LEFT JOIN " + TABLE_DAY +
+                " ON poojas.id = days.id" +
+                " ORDER BY poojas.id ASC";
         Cursor cursor = db.rawQuery(query, null);
 
-// Create a JSONArray to hold the result
-        JSONArray jsonArray = new JSONArray();
-
-// Process the cursor and construct the JSON objects
+        List<JoinedPoojaRow> joinedRows = new ArrayList<>();
         while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String title = cursor.getString(1);
+            String description = cursor.getString(2);
+            String contentURL = cursor.getString(3);
+            boolean status = cursor.getInt(4) == 1;
+            String dayValue = cursor.isNull(5) ? null : cursor.getString(5);
+            joinedRows.add(new JoinedPoojaRow(id, title, description, contentURL, status, dayValue));
+        }
+        cursor.close();
+
+        List<PoojaExportRecord> records = aggregatePoojaRecords(joinedRows);
+        JSONArray jsonArray = new JSONArray();
+        for (PoojaExportRecord record : records) {
+            // Skip orphan records that aren't scheduled on any day
+            boolean hasAnyDay = false;
+            for (int d : record.days) {
+                if (d == 1) {
+                    hasAnyDay = true;
+                    break;
+                }
+            }
+            if (!hasAnyDay) {
+                continue;
+            }
             try {
-                @SuppressLint("Range") int id = cursor.getInt(cursor.getColumnIndex("id"));
-                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex("title"));
-                @SuppressLint("Range") String description = cursor.getString(cursor.getColumnIndex("description"));
-                @SuppressLint("Range") String contentURL = cursor.getString(cursor.getColumnIndex("contentUrl"));
-                @SuppressLint("Range") boolean status = cursor.getInt(cursor.getColumnIndex("status")) == 1;
-
-                @SuppressLint("Range") String dayValue = cursor.getString(cursor.getColumnIndex("day"));
-
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("id", id);
-                jsonObject.put("title", title);
-                jsonObject.put("desc", description);
-                jsonObject.put("contentURL", contentURL);
-                jsonObject.put("status", status);
+                jsonObject.put("id", record.id);
+                jsonObject.put("title", record.title);
+                jsonObject.put("desc", record.description);
+                jsonObject.put("contentURL", record.contentURL);
+                jsonObject.put("status", record.status);
 
-                // Create a JSONArray for days
                 JSONArray daysArray = new JSONArray();
-                String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-                for (String day : daysOfWeek) {
-                    if (dayValue.equals(day)) {
-                        daysArray.put(1);
-                    } else {
-                        daysArray.put(0);
-                    }
+                for (int d : record.days) {
+                    daysArray.put(d);
                 }
                 jsonObject.put("days", daysArray);
-
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e("export", "Failed to build JSON object for id=" + record.id, e);
             }
         }
 
-// Convert the JSONArray to a JSON string
-        String jsonString = jsonArray.toString();
+        String jsonString;
+        try {
+            jsonString = jsonArray.toString(2);
+        } catch (JSONException e) {
+            jsonString = jsonArray.toString();
+        }
 
         Log.d("export", jsonString);
         return jsonString;
@@ -302,8 +386,12 @@ public class MyDBHelper extends SQLiteOpenHelper {
 
     public void deleteFromDb(int id, String day) {
         SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(TABLE_POOJA, "id = ?", new String[] { String.valueOf(id)});
-        db.delete(TABLE_DAY, "id = ? AND day = ?", new String[] { String.valueOf(id),day });
+        db.delete(TABLE_DAY, "id = ? AND day = ?", new String[]{String.valueOf(id), day});
+        db.delete(
+                TABLE_POOJA,
+                KEY_ID + " = ? AND NOT EXISTS (SELECT 1 FROM " + TABLE_DAY + " WHERE " + TABLE_DAY + "." + KEY_ID + " = ?)",
+                new String[]{String.valueOf(id), String.valueOf(id)}
+        );
         db.close();
     }
 
@@ -323,12 +411,15 @@ public class MyDBHelper extends SQLiteOpenHelper {
                         + " WHERE " + TABLE_DAY + "." + KEY_DAY + " = " + "'" + day + "'" + " ;"
                 , null
         );
-        int count=0;
+        int count = 0;
         while (cursor.moveToNext()) {
-            if(cursor.getInt(4)==0)
+            if (cursor.getInt(4) == 0) {
+                cursor.close();
                 return count;
+            }
             count++;
         }
+        cursor.close();
         return count;
     }
 }

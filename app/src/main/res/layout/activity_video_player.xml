@@ -23,17 +23,64 @@
 
 <!--    youtube player xml-->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:background="#121212"
+        android:orientation="vertical">
 
         <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
             android:id="@+id/youtube_player_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            app:enableAutomaticInitialization="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/player_error_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="#2D1B1B"
+                android:padding="12dp"
+                android:text="This video's owner has disabled embedded playback outside YouTube. Tap below to watch directly in the YouTube app, then return here to mark your Pooja status."
+                android:textColor="#FFD580"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_open_youtube"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/gradientbtn"
+                android:text="Open in YouTube App ↗"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_mark_completed"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/gradientbtn"
+                android:text="✓ Completed (Save &amp; Go Back)"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_not_completed"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#2A2A2A"
+                android:text="Not Completed (Go Back)"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
